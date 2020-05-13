@@ -11,6 +11,10 @@ module Graphiti::ActiveGraph
         }
       end
 
+      def apply_includes_on_scope(scope, sideloads)
+        scope.with_associations(sideloads)
+      end
+
       def base_scope(model)
         model.all
       end
@@ -57,6 +61,9 @@ module Graphiti::ActiveGraph
         else
           parent.send(:"#{association_name}=", children)
         end
+      end
+
+      def clear_active_connections!
       end
 
       def filter_eq(scope, attribute, value)

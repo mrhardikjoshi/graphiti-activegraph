@@ -3,13 +3,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "graphiti/active_graph/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "graphiti-active_graph"
+  spec.name          = "graphiti-activegraph"
   spec.version       = Graphiti::ActiveGraph::VERSION
   spec.authors       = ["Hardik Joshi"]
   spec.email         = ["hardikjoshi1991@gmail.com"]
 
   spec.summary       = "Easily build jsonapi.org-compatible APIs for GraphDB"
-  spec.homepage      = "https://github.com/mrhardikjoshi/graphiti-active_graph"
+  spec.homepage      = "https://github.com/mrhardikjoshi/graphiti-activegraph"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
