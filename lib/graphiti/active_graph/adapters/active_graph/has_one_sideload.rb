@@ -1,4 +1,7 @@
+require "graphiti/active_graph/adapters/active_graph/sideload"
+
 class Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload < Graphiti::Sideload::HasOne
+  include Graphiti::ActiveGraph::Adapters::ActiveGraph::Sideload
   def default_base_scope
     resource_class.model.all
   end

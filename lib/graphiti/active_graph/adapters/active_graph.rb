@@ -11,10 +11,6 @@ module Graphiti::ActiveGraph
         }
       end
 
-      def apply_includes_on_scope(scope, sideloads)
-        scope.with_associations(sideloads)
-      end
-
       def base_scope(model)
         model.all
       end
@@ -24,7 +20,7 @@ module Graphiti::ActiveGraph
       end
 
       def transaction(_model_class)
-        ::ActiveGraph::Base.run_transaction do
+        ::ActiveGraph::Base.transaction do
           yield
         end
       end
@@ -51,16 +47,41 @@ module Graphiti::ActiveGraph
         scope.to_a
       end
 
-      def associate_all(parent, children, association_name, association_type)
-        if association_type == :has_many
-          if !parent.send(:"#{association_name}").present?
-            parent.send(:"#{association_name}=", children)
-          else
-            parent.send(:"#{association_name}") << children
-          end
-        else
-          parent.send(:"#{association_name}=", children)
-        end
+      # def associate_all(parent, children, association_name, association_type)
+      #   if association_type == :has_many
+      #     if !parent.send(:"#{association_name}").present?
+      #       parent.send(:"#{association_name}=", children)
+      #     else
+      #       parent.send(:"#{association_name}") << children
+      #     end
+      #   else
+      #     parent.send(:"#{association_name}=", children)
+      #   end
+      # end
+
+      def process_belongs_to(persistence, attributes)
+        []
+      end
+
+      def process_has_many(persistence, caller_model)
+        []
+      end
+
+      def persistence_attributes(persistence, attributes)
+        rel_attrs = {}
+        @persistence = persistence
+
+        attributes_for_has_one(rel_attrs)
+        attributes_for_has_many(rel_attrs)
+
+        attributes.merge rel_attrs
+      end
+
+      def associate(parent, child, association_name, type)
+      end
+
+      def disassociate(parent, child, association_name, type)
+        parent.send(:"#{association_name}=", nil)
       end
 
       def clear_active_connections!
@@ -87,6 +108,46 @@ module Graphiti::ActiveGraph
       alias filter_boolean_not_eq filter_not_eq
       alias filter_uuid_not_eq filter_not_eq
       alias filter_enum_not_eq filter_not_eq
+
+      private
+
+
+      def attributes_for_has_one(rel_attrs)
+        @persistence.iterate(only: [:has_one]) do |x|
+          process_relationship_attrs(x, rel_attrs, false)
+        end
+      end
+
+      def attributes_for_has_many(rel_attrs)
+        @persistence.iterate(only: [:has_many]) do |x|
+          process_relationship_attrs(x, rel_attrs, true)
+        end
+      end
+
+      def process_relationship_attrs(x, rel_attrs, assign_multiple)
+        x[:object] = x[:resource]
+          .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
+
+        resource = @persistence.instance_variable_get(:@resource)
+        meta = @persistence.instance_variable_get(:@meta)
+        # Relationship start/end nodes cannot be changed once persisted
+        unless meta[:method] == :update && resource.relation_resource?
+          if assign_multiple
+            rel_attrs[x[:foreign_key]] ||= []
+            rel_attrs[x[:foreign_key]] << resource_association_value(x)
+          else
+            rel_attrs[x[:foreign_key]] = resource_association_value(x)
+          end
+        end
+      end
+
+      def resource_association_value(rel_map)
+        if [:destroy, :disassociate].include?(rel_map[:meta][:method])
+          nil
+        else
+          rel_map[:object]
+        end
+      end
     end
   end
 end

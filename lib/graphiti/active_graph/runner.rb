@@ -8,14 +8,17 @@ module Graphiti::ActiveGraph
         :sideload,
         :parent,
         :params
-      scope = jsonapi_scope(base, scope_opts)
+      scope = jsonapi_scope(base, scope_opts) unless jsonapi_resource.relation_resource?
+      preloaded = opts[:preloaded] || (jsonapi_resource.relation_resource? && jsonapi_resource.base_scope)
+      options = { payload: deserialized_payload,
+        single: opts[:single],
+        raise_on_missing: opts[:raise_on_missing],
+        preloaded: preloaded
+      }
       ::Graphiti::ResourceProxy.new jsonapi_resource,
         scope,
         query,
-        payload: deserialized_payload,
-        single: opts[:single],
-        raise_on_missing: opts[:raise_on_missing],
-        preloaded: opts[:preloaded]
+        options
     end
   end
 end
