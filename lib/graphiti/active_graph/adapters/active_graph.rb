@@ -71,6 +71,7 @@ module Graphiti::ActiveGraph
         rel_attrs = {}
         @persistence = persistence
 
+        del_empty_rels(rel_attrs) unless resource.relation_resource?
         attributes_for_has_one(rel_attrs)
         attributes_for_has_many(rel_attrs)
 
@@ -111,6 +112,12 @@ module Graphiti::ActiveGraph
 
       private
 
+      def del_empty_rels(rel_attrs)
+        relationships = @persistence.instance_variable_get(:@relationships)
+        relationships.each do |rel_name, rel_data|
+          rel_attrs[rel_name] = nil if rel_data.blank?
+        end
+      end
 
       def attributes_for_has_one(rel_attrs)
         @persistence.iterate(only: [:has_one]) do |x|
@@ -142,7 +149,7 @@ module Graphiti::ActiveGraph
       end
 
       def resource_association_value(rel_map)
-        if [:destroy, :disassociate].include?(rel_map[:meta][:method])
+        if [:destroy, :disassociate].include?(rel_map[:meta][:method]) || rel_map[:attributes].blank?
           nil
         else
           rel_map[:object]

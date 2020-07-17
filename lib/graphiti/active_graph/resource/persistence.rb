@@ -8,7 +8,7 @@ module Graphiti::ActiveGraph
 
         run_callbacks :persistence, :update, update_params, meta do
           run_callbacks :attributes, :update, update_params, meta do |params|
-            model_instance = model.find(id)
+            model_instance = id ? model.find(id) : self.class._find(id: id).data
             call_with_meta(:assign_attributes, model_instance, params, meta)
             model_instance
           end
