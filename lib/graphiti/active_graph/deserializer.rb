@@ -27,6 +27,31 @@ module Graphiti::ActiveGraph
       @env = env
     end
 
+    def process_relationships(relationship_hash)
+      {}.tap do |hash|
+        relationship_hash.each_pair do |name, relationship_payload|
+          name = name.to_sym
+          data_payload = relationship_payload[:data]
+          hash[name] = data_payload.nil? ? process_nil_relationship(name) : process_relationship(relationship_payload[:data])
+        end
+      end
+    end
+
+    # change empty relationship as `disassociate` hash so they will be removed
+    def process_nil_relationship(name)
+      attributes = {}
+      method_name = :disassociate
+
+      {
+        meta: {
+          jsonapi_type: name.to_sym,
+          method: method_name
+        },
+        attributes: attributes,
+        relationships: {}
+      }
+    end
+
     def meta(action: nil)
       results = super
       return results if action.present? || @env.nil?

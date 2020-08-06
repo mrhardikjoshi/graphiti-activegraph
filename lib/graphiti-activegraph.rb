@@ -10,4 +10,6 @@ if defined?(ActiveGraph)
   require 'graphiti/active_graph/util/persistence'
   require 'graphiti/active_graph/resource/persistence'
   require 'graphiti/active_graph/deserializer'
+  require 'graphiti/active_graph/scoping/filterable.rb'
+  require 'graphiti/active_graph/scoping/filter'
 end

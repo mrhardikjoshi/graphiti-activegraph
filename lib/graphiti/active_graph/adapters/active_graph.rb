@@ -15,6 +15,12 @@ module Graphiti::ActiveGraph
         model.all
       end
 
+      def assign_attributes(model_instance, attributes)
+        attributes.each_pair do |k, v|
+          model_instance.send(:"#{k}=", v) if model_instance.respond_to?(:"#{k}=")
+        end
+      end
+
       def paginate(scope, current_page, per_page)
         scope
       end
