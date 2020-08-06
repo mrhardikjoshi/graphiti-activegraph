@@ -54,6 +54,7 @@ module Graphiti::ActiveGraph
             validate_allowlist(resource, filter, value)
             validate_denylist(resource, filter, value)
             value = value[0] if filter_map[:single]
+            yield filter, operator, value
           end
         end
       end
