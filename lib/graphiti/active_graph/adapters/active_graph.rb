@@ -16,6 +16,8 @@ module Graphiti::ActiveGraph
       end
 
       def assign_attributes(model_instance, attributes)
+        model_instance.before_assign_resource_attr if model_instance.respond_to?(:before_assign_resource_attr)
+
         attributes.each_pair do |k, v|
           model_instance.send(:"#{k}=", v) if model_instance.respond_to?(:"#{k}=")
         end
