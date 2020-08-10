@@ -17,9 +17,9 @@ module Graphiti::ActiveGraph
     def initialize(payload, env=nil, model=nil, parent_map=nil)
       super(payload)
 
-      # if data.blank? && JsonApiNonParsableMiddleware.parsable_content?(env)
-      #   raise ArgumentError, "JSON API payload must contain the 'data' key"
-      # end
+      if data.blank? && env && JsonApiNonParsableMiddleware.parsable_content?(env)
+        raise ArgumentError, "JSON API payload must contain the 'data' key"
+      end
 
       @params = payload
       @model = model
