@@ -12,4 +12,5 @@ if defined?(ActiveGraph)
   require 'graphiti/active_graph/deserializer'
   require 'graphiti/active_graph/scoping/filterable.rb'
   require 'graphiti/active_graph/scoping/filter'
+  require 'graphiti/active_graph/query'
 end
