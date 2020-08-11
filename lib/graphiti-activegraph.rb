@@ -1,3 +1,6 @@
+require 'graphiti'
+require 'zeitwerk'
+
 # Workaround for missing zeitwerk support as of jruby-9.2.13.0
 module Graphiti
   module ActiveGraph
@@ -10,7 +13,6 @@ module Graphiti
 end
 # End workaround
 
-require "zeitwerk"
 loader = Zeitwerk::Loader.for_gem
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
