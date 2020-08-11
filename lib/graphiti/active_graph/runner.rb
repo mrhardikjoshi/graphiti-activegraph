@@ -36,6 +36,3 @@ module Graphiti::ActiveGraph
   end
 end
 
-class ::Graphiti::Runner
-  prepend ::Graphiti::ActiveGraph::Runner
-end

@@ -76,13 +76,5 @@ module Graphiti::ActiveGraph
 
       success
     end
-
-    # def fix_has_one_array
-    #   binding.pry
-    # end
   end
-end
-
-class ::Graphiti::ResourceProxy
-  prepend ::Graphiti::ActiveGraph::ResourceProxy
 end

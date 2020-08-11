@@ -4,7 +4,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-class ::Graphiti::Scope
-  prepend ::Graphiti::ActiveGraph::Scope
-end

@@ -107,7 +107,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-class ::Graphiti::Deserializer
-  prepend ::Graphiti::ActiveGraph::Deserializer
-end

@@ -1,9 +1,6 @@
 module Graphiti::ActiveGraph
   module Adapters
     class ActiveGraph < ::Graphiti::Adapters::Abstract
-      require "graphiti/active_graph/adapters/active_graph/has_many_sideload"
-      require "graphiti/active_graph/adapters/active_graph/has_one_sideload"
-
       def self.sideloading_classes
         {
           has_many: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasManySideload,

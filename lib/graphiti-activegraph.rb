@@ -1,15 +1,28 @@
-require "graphiti"
-require 'graphiti/active_graph/version'
+# Workaround for missing zeitwerk support as of jruby-9.2.13.0
+module Graphiti
+  module ActiveGraph
+    module Scoping
+    end
 
-if defined?(ActiveGraph)
-  require 'graphiti/active_graph/adapters/active_graph.rb'
-  require 'graphiti/active_graph/resource'
-  require 'graphiti/active_graph/scope'
-  require 'graphiti/active_graph/runner'
-  require 'graphiti/active_graph/resource_proxy'
-  require 'graphiti/active_graph/resource/persistence'
-  require 'graphiti/active_graph/deserializer'
-  require 'graphiti/active_graph/scoping/filterable.rb'
-  require 'graphiti/active_graph/scoping/filter'
-  require 'graphiti/active_graph/query'
+    module Adapters
+    end
+  end
 end
+# End workaround
+
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
+loader.setup
+
+Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
+Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
+Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
+Graphiti::Scoping::Sort.prepend Graphiti::ActiveGraph::Scoping::Sort
+Graphiti::Deserializer.prepend Graphiti::ActiveGraph::Deserializer
+Graphiti::Query.prepend Graphiti::ActiveGraph::Query
+Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
+Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
+Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
+Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
+Graphiti::Scope.prepend Graphiti::ActiveGraph::Scope

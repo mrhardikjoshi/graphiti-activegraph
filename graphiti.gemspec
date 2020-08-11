@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "graphiti", "~> 1.2.0"
   spec.add_dependency "concurrent-ruby", "~> 1.0"
   spec.add_dependency "activesupport", ">= 4.1"
+  spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "faraday", "~> 0.15"
   spec.add_development_dependency "kaminari", "~> 0.17"

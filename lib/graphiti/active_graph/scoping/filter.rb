@@ -61,7 +61,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-class ::Graphiti::Scoping::Filter
-  prepend ::Graphiti::ActiveGraph::Scoping::Filter
-end

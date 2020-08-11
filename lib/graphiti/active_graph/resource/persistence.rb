@@ -23,7 +23,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-module ::Graphiti::Resource::Persistence
-  prepend ::Graphiti::ActiveGraph::Resource::Persistence
-end

@@ -28,7 +28,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-class ::Graphiti::Query
-  prepend ::Graphiti::ActiveGraph::Query
-end

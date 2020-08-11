@@ -10,7 +10,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-
-module ::Graphiti::Scoping::Filterable
-  prepend ::Graphiti::ActiveGraph::Scoping::Filterable
-end
