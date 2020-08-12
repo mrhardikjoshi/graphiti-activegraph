@@ -39,6 +39,29 @@ module Graphiti
       def sideload_name_arr(query)
         query.sideloads.keys.map(&:to_sym)
       end
+
+      def typecast(name, value, flag)
+        att = get_attr!(name, flag, request: true)
+
+        # in case of attribute is not declared on resource
+        # do not throw error, return original value without typecast
+        return value unless att
+
+        type_name = att[:type]
+        if flag == :filterable
+          type_name = filters[name][:type]
+        end
+        type = Graphiti::Types[type_name]
+        return if value.nil? && type[:kind] != "array"
+        begin
+          flag = :read if flag == :readable
+          flag = :write if flag == :writable
+          flag = :params if [:sortable, :filterable].include?(flag)
+          type[flag][value]
+        rescue => e
+          raise Errors::TypecastFailed.new(self, name, value, e, type_name)
+        end
+      end
     end
   end
 end
