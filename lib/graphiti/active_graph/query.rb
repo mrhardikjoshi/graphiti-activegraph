@@ -26,5 +26,10 @@ module Graphiti::ActiveGraph
         end
       end
     end
+
+    def update_include_hash(authorized_include_param)
+      @include_hash = authorized_include_param
+      @sideloads = nil
+    end
   end
 end

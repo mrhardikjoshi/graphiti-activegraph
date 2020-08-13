@@ -6,8 +6,9 @@ module Graphiti
   module ActiveGraph
     module Scoping
     end
-
     module Adapters
+    end
+    module Util
     end
   end
 end
@@ -21,6 +22,7 @@ Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persist
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Scoping::Sort.prepend Graphiti::ActiveGraph::Scoping::Sort
+Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
 Graphiti::Deserializer.prepend Graphiti::ActiveGraph::Deserializer
 Graphiti::Query.prepend Graphiti::ActiveGraph::Query
 Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
