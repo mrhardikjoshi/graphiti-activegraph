@@ -19,15 +19,5 @@ module Graphiti::ActiveGraph
         end
       end
     end
-
-    # TO:DO this method shouldn't be here, move it to org-api
-    def apply_scoping(scope, opts)
-      super
-
-      opts[:query_obj] = @query
-      add_scoping(:include, ::JsonapiExt::Scoping::Include, opts) unless @resource.remote?
-
-      @object
-    end
   end
 end

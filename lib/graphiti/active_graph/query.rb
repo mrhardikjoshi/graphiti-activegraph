@@ -27,6 +27,22 @@ module Graphiti::ActiveGraph
       end
     end
 
+    def sorts
+      return super unless (sort = params[:sort]) && sort.include?('.')
+
+      @hash[:deep_sort] = sort_criteria(sort)
+    end
+
+    def self.parse_hash(hash)
+      hash.map { |key, value| [key.to_s.split('.').map(&:to_sym), value] }.to_h
+    end
+
+    private
+
+    def sort_criteria(sort)
+      sort.split(',').map(&method(:sort_attr)).map(&self.class.method(:parse_hash))
+    end
+
     def update_include_hash(authorized_include_param)
       @include_hash = authorized_include_param
       @sideloads = nil
