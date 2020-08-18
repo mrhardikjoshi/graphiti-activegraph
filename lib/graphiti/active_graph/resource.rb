@@ -33,7 +33,11 @@ module Graphiti
       end
 
       def before_resolve(scope, query)
-        scope.with_associations(sideload_name_arr(query))
+        if query.params[:group_by].present?
+          scope.collect { |gp| query.params[:group_class].new(name: gp['name']) }
+        else
+          scope
+        end
       end
 
       def sideload_name_arr(query)
