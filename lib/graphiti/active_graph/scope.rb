@@ -7,14 +7,14 @@ module Graphiti::ActiveGraph
 
         if sideload.assign_each_proc
           parents.each do |parent|
-            children = sideload.assign_each_proc.call(parent) || []
+            children = sideload.assign_each_proc.call(parent) || sideload.default_value_when_empty
 
             # currently there is no possible way to assign association on activegraph without triggering save
             # https://github.com/neo4jrb/activegraph/issues/1445
             # as a workaround we are using instance variable here to store and retrive associations
             # once above issue is fixed use that fix to assign the association here
             # and also remove 1) this code and 2) SerializerRelationship#data_proc
-            parent.instance_variable_set("@graphiti_render_#{name}", children)
+            parent.instance_variable_set("@graphiti_render_#{name}", { data: children })
           end
         end
       end

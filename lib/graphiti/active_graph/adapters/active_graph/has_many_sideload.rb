@@ -8,4 +8,8 @@ class Graphiti::ActiveGraph::Adapters::ActiveGraph::HasManySideload < Graphiti::
   def infer_foreign_key
     association_name.to_sym
   end
+
+  def default_value_when_empty
+    []
+  end
 end
