@@ -19,6 +19,7 @@ module Graphiti::ActiveGraph
 
       return super unless @preloaded
 
+      @scope.resolve_sideloads(@preloaded) unless @query.sideloads.empty?
       @single ? data_for_preloaded_record : data_for_preloaded_records
     end
 

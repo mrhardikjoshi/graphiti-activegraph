@@ -6,7 +6,7 @@ module Graphiti::ActiveGraph
         next if sideload.nil? || sideload.shared_remote?
 
         if sideload.assign_each_proc
-          parents.each do |parent|
+          Array.wrap(parents).each do |parent|
             children = sideload.assign_each_proc.call(parent) || sideload.default_value_when_empty
 
             # currently there is no possible way to assign association on activegraph without triggering save
