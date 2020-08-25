@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph
-  module Scope
+  module SideloadResolve
     def resolve_sideloads(parents)
       @query.sideloads.each_pair do |name, q|
         sideload = @resource.class.sideload(name)

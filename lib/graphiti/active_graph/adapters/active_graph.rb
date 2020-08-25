@@ -21,7 +21,7 @@ module Graphiti::ActiveGraph
       end
 
       def paginate(scope, current_page, per_page)
-        scope
+        scope.skip((current_page - 1) * per_page).limit(per_page)
       end
 
       def transaction(_model_class)
@@ -35,7 +35,7 @@ module Graphiti::ActiveGraph
       end
 
       def count(scope, _attr)
-        scope.count
+        scope.skip(0).limit(nil).count
       end
 
       def save(model_instance)

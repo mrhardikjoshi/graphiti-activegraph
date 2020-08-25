@@ -29,4 +29,4 @@ Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
 Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
 Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
 Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
-Graphiti::Scope.prepend Graphiti::ActiveGraph::Scope
+Graphiti::Scope.prepend Graphiti::ActiveGraph::SideloadResolve

@@ -1,5 +1,7 @@
 module Graphiti::ActiveGraph
   module ResourceProxy
+    include Graphiti::ActiveGraph::SideloadResolve
+
     def initialize(resource, scope, query,
       payload: nil,
       single: false,
@@ -19,7 +21,7 @@ module Graphiti::ActiveGraph
 
       return super unless @preloaded
 
-      @scope.resolve_sideloads(@preloaded) unless @query.sideloads.empty?
+      resolve_sideloads(@preloaded)
       @single ? data_for_preloaded_record : data_for_preloaded_records
     end
 
