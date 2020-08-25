@@ -1,6 +1,7 @@
 module Graphiti::ActiveGraph
   module ResourceProxy
     include Graphiti::ActiveGraph::SideloadResolve
+    attr_reader :preloaded
 
     def initialize(resource, scope, query,
       payload: nil,
