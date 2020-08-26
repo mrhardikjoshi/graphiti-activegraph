@@ -1,31 +1,6 @@
 module Graphiti::ActiveGraph
   module Scoping
     module Filter
-      def apply
-        if missing_required_filters.any? && !@opts[:bypass_required_filters]
-          raise Errors::RequiredFilter.new(resource, missing_required_filters)
-        end
-
-        if missing_dependent_filters.any?
-          raise Errors::MissingDependentFilter.new \
-            resource, missing_dependent_filters
-        end
-
-        each_filter do |filter, operator, value|
-          @scope = filter_scope(filter, operator, value)
-        end
-
-        resource.after_filtering(@scope)
-
-        # process query params if they are present in request
-        query_param = resource.context.params[:query]
-        if query_param.present?
-          apply_query_param(query_param)
-        else
-          scope
-        end
-      end
-
       def each_filter
         filter_param.each_pair do |param_name, param_value|
           filter = find_filter!(param_name)

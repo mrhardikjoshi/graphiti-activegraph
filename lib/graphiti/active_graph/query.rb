@@ -1,5 +1,7 @@
 module Graphiti::ActiveGraph
   module Query
+    attr_reader :deep_sort
+
     def filters
       @filters ||= begin
         {}.tap do |hash|
@@ -30,17 +32,18 @@ module Graphiti::ActiveGraph
     def sorts
       return super unless (sort = params[:sort]) && sort.include?('.')
 
-      @hash[:deep_sort] = sort_criteria(sort)
+      @deep_sort = sort_criteria(sort)
+      []
     end
 
-    def self.parse_hash(hash)
+    def parse_sort_criteria_hash(hash)
       hash.map { |key, value| [key.to_s.split('.').map(&:to_sym), value] }.to_h
     end
 
     private
 
     def sort_criteria(sort)
-      sort.split(',').map(&method(:sort_attr)).map(&self.class.method(:parse_hash))
+      sort.split(',').map(&method(:sort_hash)).map(&method(:parse_sort_criteria_hash))
     end
 
     def update_include_hash(authorized_include_param)
