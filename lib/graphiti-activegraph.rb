@@ -21,7 +21,6 @@ loader.setup
 Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
-Graphiti::Scoping::Sort.prepend Graphiti::ActiveGraph::Scoping::Sort
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
 Graphiti::Deserializer.prepend Graphiti::ActiveGraph::Deserializer
 Graphiti::Query.prepend Graphiti::ActiveGraph::Query

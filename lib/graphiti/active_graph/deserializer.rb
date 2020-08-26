@@ -66,20 +66,43 @@ module Graphiti::ActiveGraph
       results
     end
 
-    def add_path_id_relationships!(relationship_hash)
+    def add_path_id_to_relationships!(params)
+      return params if path_relationships_updated?
       detect_conflict(:id, @params[:id], attributes[:id])
       path_map.each do |rel_name, path_value|
         body_value = relationships.dig(rel_name, :attributes, :id)
-        detect_conflict(rel_name, path_value, body_value)
-        relationship_hash[rel_name] =
-          {
-            data: {
-              type: rel_name.to_s,
-              id: path_value.to_i
-            }
-          }
+        if body_value
+          detect_conflict(rel_name, path_value.to_i, body_value&.to_i)
+        else
+          update_params(params, rel_name, path_value)
+          update_realationships(rel_name, path_value)
+        end
       end
-      relationship_hash
+      path_relationships_updated!
+      params
+    end
+
+    def path_relationships_updated!
+      @path_relationships_updated = true
+    end
+
+    def path_relationships_updated?
+      @path_relationships_updated.present?
+    end
+
+    def update_params(params, rel_name, path_value)
+      params[:data] ||= {}
+      params[:data][:relationships] ||= {}
+      params[:data][:relationships][rel_name] = {
+        data: {
+          type: rel_name.to_s,
+          id: path_value.to_i
+        }
+      }
+    end
+
+    def update_realationships(rel_name, path_value)
+      relationships[rel_name] = { meta: {}, attributes: { id: path_value.to_i } }
     end
 
     def path_map
