@@ -15,6 +15,7 @@ end
 # End workaround
 
 loader = Zeitwerk::Loader.for_gem
+loader.inflector.inflect 'version' => 'VERSION'
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
 
