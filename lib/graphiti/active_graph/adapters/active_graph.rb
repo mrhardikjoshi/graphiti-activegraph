@@ -30,8 +30,12 @@ module Graphiti::ActiveGraph
         end
       end
 
-      def order(scope, attribute, direction)
-        scope.order(attribute => direction)
+      def order(scope, attribute, direction, extra_field = false)
+        if extra_field
+          scope.query.order("#{attribute} #{direction}").proxy_as(scope.model, scope.identity)
+        else
+          scope.order(attribute => direction)
+        end
       end
 
       def count(scope, _attr)
