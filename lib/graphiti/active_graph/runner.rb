@@ -20,7 +20,8 @@ module Graphiti::ActiveGraph
         :after_resolve,
         :sideload,
         :parent,
-        :params
+        :params,
+        :preloaded
       scope = jsonapi_scope(base, scope_opts) unless jsonapi_resource.relation_resource?
       preloaded = opts[:preloaded] || (jsonapi_resource.relation_resource? && jsonapi_resource.base_scope)
       options = { payload: deserialized_payload,
