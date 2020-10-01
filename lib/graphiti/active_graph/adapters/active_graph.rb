@@ -9,7 +9,7 @@ module Graphiti::ActiveGraph
       end
 
       def base_scope(model)
-        model.all
+        model
       end
 
       def assign_attributes(model_instance, attributes)
