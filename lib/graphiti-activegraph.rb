@@ -23,6 +23,8 @@ Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persist
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
+Graphiti::Util::SerializerAttribute.prepend Graphiti::ActiveGraph::Util::SerializerAttribute
+Graphiti::Util::RelationshipPayload.prepend Graphiti::ActiveGraph::Util::RelationshipPayload
 Graphiti::Deserializer.prepend Graphiti::ActiveGraph::Deserializer
 Graphiti::Query.prepend Graphiti::ActiveGraph::Query
 Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
