@@ -6,7 +6,7 @@ module Graphiti::ActiveGraph
       @query = query
       @action = action
 
-      validator = ::Graphiti::RequestValidator.new(jsonapi_resource, params)
+      validator = ::Graphiti::RequestValidator.new(jsonapi_resource, params, action)
 
       validator.validate! unless params[:skip_render_val]
 

@@ -25,6 +25,9 @@ module Graphiti
         runner = ::Graphiti::Runner.new(self, params)
         runner.proxy(nil, raise_on_missing: false, preloaded: obj_arr)
       end
+
+      def guard_nil_id!(params)
+      end
     end
 
     module ResourceInstanceMethods
