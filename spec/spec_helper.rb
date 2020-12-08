@@ -1,5 +1,8 @@
-require "pry"
-require "graphiti"
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+
+require 'pry'
+require 'graphiti'
+require 'graphiti-activegraph'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
