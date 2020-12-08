@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activemodel", ">= 4.1"
   spec.add_development_dependency "graphiti_spec_helpers", "1.0.beta.4"
   spec.add_development_dependency "standard"
+  spec.add_development_dependency "rspec", "~> 3.9.0"
 end
