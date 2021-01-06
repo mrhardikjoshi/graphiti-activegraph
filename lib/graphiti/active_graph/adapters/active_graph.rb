@@ -15,9 +15,12 @@ module Graphiti::ActiveGraph
       def assign_attributes(model_instance, attributes)
         model_instance.before_assign_resource_attr if model_instance.respond_to?(:before_assign_resource_attr)
 
-        attributes.each_pair do |k, v|
-          model_instance.send(:"#{k}=", v) if model_instance.respond_to?(:"#{k}=")
-        end
+        # currently there is no possible way to assign association on activegraph without triggering save
+        # https://github.com/neo4jrb/activegraph/issues/1445
+        # using "=" operator bypasses validations and callbacks in case of associations
+        # once above issue is fixed, we can change the below code to assign instead of update
+
+        model_instance.update(attributes)
       end
 
       def paginate(scope, current_page, per_page)
@@ -43,7 +46,7 @@ module Graphiti::ActiveGraph
       end
 
       def save(model_instance)
-        model_instance.save
+        model_instance.save if model_instance.changed?
         model_instance
       end
 
