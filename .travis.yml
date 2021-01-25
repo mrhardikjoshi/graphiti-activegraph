@@ -7,4 +7,4 @@ cache: bundler
 rvm:
   - 2.7.1
   - jruby-9.2.13.0
-script: 'bin/setup default --trace; bundle exec rspec'
+script: 'bundle exec rspec'
