@@ -37,6 +37,22 @@ module Graphiti::ActiveGraph
       end
     end
 
+    # Ignore attributes and relationship provided in payload's "included" block 
+    def process_relationship_datum(datum)
+      attributes = {}
+      attributes[:id] = datum[:id] if datum[:id]
+
+      {
+        meta: {
+          jsonapi_type: datum[:type],
+          temp_id: datum[:'temp-id'],
+          method: datum[:method]&.to_sym
+        },
+        attributes: attributes,
+        relationships: {}
+      }
+    end
+
     # change empty relationship as `disassociate` hash so they will be removed
     def process_nil_relationship(name)
       attributes = {}
