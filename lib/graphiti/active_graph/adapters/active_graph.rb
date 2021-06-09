@@ -4,7 +4,9 @@ module Graphiti::ActiveGraph
       def self.sideloading_classes
         {
           has_many: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasManySideload,
-          has_one: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload
+          has_one: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload,
+          polymorphic_belongs_to: Graphiti::ActiveGraph::Adapters::ActiveGraph::PolymorphicBelongsTo,
+          belongs_to: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload,
         }
       end
 
