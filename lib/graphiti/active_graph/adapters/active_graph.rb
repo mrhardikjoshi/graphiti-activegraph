@@ -25,7 +25,7 @@ module Graphiti::ActiveGraph
         model_instance.update(attributes)
       end
 
-      def paginate(scope, current_page, per_page)
+      def paginate(scope, current_page, per_page, _offset)
         scope.skip((current_page - 1) * per_page).limit(per_page)
       end
 
