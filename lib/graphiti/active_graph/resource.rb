@@ -35,14 +35,6 @@ module Graphiti
         self.class.relation_resource?
       end
 
-      def before_resolve(scope, query)
-        if query.params[:group_by].present?
-          scope.collect { |gp| query.params[:group_class].new(name: gp['name']) }
-        else
-          scope
-        end
-      end
-
       def sideload_name_arr(query)
         query.sideloads.keys.map(&:to_sym)
       end
