@@ -1,6 +1,8 @@
 module Graphiti::ActiveGraph
   module Scoping
     module Filter
+      include Filterable
+
       def each_filter
         filter_param.each_pair do |param_name, param_value|
           filter = find_filter!(param_name)
