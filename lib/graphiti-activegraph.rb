@@ -39,3 +39,6 @@ Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
 Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
 Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
 Graphiti::Scope.prepend Graphiti::ActiveGraph::SideloadResolve
+
+# JSONAPI extensions
+JSONAPI::Serializable::Resource.prepend Graphiti::ActiveGraph::JsonapiExt::Serializable::ResourceExt
