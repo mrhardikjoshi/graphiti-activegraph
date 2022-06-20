@@ -11,6 +11,10 @@ module Graphiti
     end
     module Util
     end
+    module JsonapiExt
+      module Serializable
+      end
+    end
   end
 end
 # End workaround
