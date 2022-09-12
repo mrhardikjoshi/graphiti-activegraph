@@ -5,6 +5,6 @@ jdk:
   - openjdk11
 cache: bundler
 rvm:
-  - 3.1.2
+  - 2.7.6
   - jruby-9.3.7.0
 script: 'bundle exec rspec'
