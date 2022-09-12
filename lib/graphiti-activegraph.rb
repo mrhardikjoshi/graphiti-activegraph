@@ -2,6 +2,8 @@ require 'zeitwerk'
 
 # Workaround for jruby prepend issue https://github.com/jruby/jruby/issues/6971
 module Graphiti
+  module ActiveGraph
+  end
   module Scoping
   end
 end
@@ -9,7 +11,9 @@ require 'graphiti/scoping/filterable'
 require 'graphiti/resource/persistence'
 # End workaround for jruby prepend issue
 
-Zeitwerk::Loader.for_gem(warn_on_extra_files: false).setup
+loader = Zeitwerk::Loader.for_gem
+loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
+loader.setup
 
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence

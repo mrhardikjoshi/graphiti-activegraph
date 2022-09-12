@@ -2,7 +2,7 @@ $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
 require 'pry'
 require 'active_model'
-require 'graphiti_activegraph'
+require 'graphiti-activegraph'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
