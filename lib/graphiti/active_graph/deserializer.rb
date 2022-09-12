@@ -91,7 +91,7 @@ module Graphiti::ActiveGraph
       params[:data][:relationships] ||= {}
       params[:data][:relationships][rel_name] = {
         data: {
-          type: rel_name.to_s,
+          type: rel_name.to_s.pluralize,
           id: path_value.to_i
         }
       }
@@ -122,7 +122,7 @@ module Graphiti::ActiveGraph
     end
 
     def detect_conflict(key, path_value, body_value)
-      raise Conflict.new(key, path_value, body_value) if body_value && body_value != path_value
+      raise Conflict.new(key, path_value, body_value) if path_value && body_value && body_value != path_value
     end
   end
 end
