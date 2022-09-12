@@ -11,7 +11,7 @@ require 'graphiti/scoping/filterable'
 require 'graphiti/resource/persistence'
 # End workaround for jruby prepend issue
 
-loader = Zeitwerk::Loader.for_gem
+loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
 
