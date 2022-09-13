@@ -1,5 +1,3 @@
-require File.expand_path("../../../support/jsonapi_resource_support", __FILE__)
-
 RSpec.describe JSONAPI::Serializable::Resource do
   let(:include) { [:planets].to_set }
   let!(:resource) { SerializableStar.new(object: sun) }
@@ -20,19 +18,18 @@ RSpec.describe JSONAPI::Serializable::Resource do
 
     it 'rel mentioned in fields are present' do
       expected = {
-        data: [{ type: :satellites, id: '111' },
-               { type: :satellites, id: '121' }]
+        data: [{ type: :satellites, id: moon.id.to_s },
+               { type: :satellites, id: phobos.id.to_s }]
       }
       expect(subject[:relationships][:satellites]).to eq(expected)
     end
 
     it 'rel not mentioned in fields are absent' do
-
       expect(subject[:relationships][:planets]).to be nil
     end
 
     it 'only attributes mentioned in fields are present' do
-      expect(subject[:attributes]).to contain_exactly(*sun.attributes_map.slice(:age))
+      expect(subject[:attributes]).to eq(age: sun.age)
     end
   end
 
@@ -41,15 +38,15 @@ RSpec.describe JSONAPI::Serializable::Resource do
 
     it 'rel mentioned in include are present' do
       expected = {
-        data: [{ type: :planets, id: '11' },
-               { type: :planets, id: '12' }]
+        data: [{ type: :planets, id: earth.id.to_s },
+               { type: :planets, id: mars.id.to_s }]
       }
 
       expect(subject[:relationships][:planets]).to eq(expected)
     end
 
     it 'all attributes are present' do
-      expect(subject[:attributes]).to eq(sun.attributes_map)
+      expect(subject[:attributes]).to eq(sun.attributes.transform_keys(&:to_sym))
     end
   end
 end

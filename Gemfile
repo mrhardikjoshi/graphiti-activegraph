@@ -5,6 +5,7 @@ gemspec
 gem "zeitwerk"
 
 group :test do
+  gem "activegraph"
   gem "pry"
   gem "appraisal"
   gem "guard"
