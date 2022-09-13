@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
 require 'pry'
+require 'neo4j_ruby_driver'
 require 'active_model'
 require 'active_graph'
 require 'graphiti-activegraph'
