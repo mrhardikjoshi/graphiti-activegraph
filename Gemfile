@@ -5,8 +5,7 @@ gemspec
 gem "zeitwerk"
 
 group :test do
-  gem "neo4j-ruby-driver"
-  gem "activegraph"
+  gem "activegraph", "11.1.0.alpha.4"
   gem "pry"
   gem "appraisal"
   gem "guard"
