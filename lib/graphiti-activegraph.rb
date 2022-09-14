@@ -15,6 +15,7 @@ loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
 
+require 'active_graph'
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
 require 'graphiti'
