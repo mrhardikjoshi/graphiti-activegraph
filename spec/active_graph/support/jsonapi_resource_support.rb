@@ -1,58 +1,51 @@
-class Model
+module ModelParent
   def initialize(params = {})
+    super
     @__graphiti_serializer =
       defined?(graphiti_serializer) ? graphiti_serializer : "Serializable#{self.class.name}".constantize
-
-    params.each do |k, v|
-      instance_variable_set("@#{k}", v)
-    end
-  end
-
-  def attributes_map(skip_id: true)
-    map = self.class.attributes_list.each_with_object({}) do |attr_name, hash|
-      hash[attr_name] = send(attr_name)
-    end
-
-    skip_id ? map.except(:id) : map
-  end
-
-  def self.attributes_list
-    @attributes_list ||= []
-  end
-
-  def self.attributes(*attr_names)
-    attributes_list.concat(attr_names)
-
-    attr_accessor *attr_names
-  end
-
-  def self.relationships(*attr_names)
-    attr_accessor *attr_names
   end
 end
 
-class Star < Model
-  # age - billion years
-  attributes :id, :name, :age
-  relationships :planets, :satellites
+class Star
+  include ActiveGraph::Node
+  include ModelParent
+
+  property :id, type: Integer
+  property :name, type: String
+  property :age, type: Float # unit billion years
+
+  has_many :in, :planets, type: :planet
+  has_many :in, :satellites, type: :satellite
 end
 
-class Planet < Model
-  # temperature - Kelvin
-  attributes :id, :name, :temperature
-  relationships :star, :satellites
+class Planet
+  include ActiveGraph::Node
+  include ModelParent
+
+  property :id, type: Integer
+  property :name, type: String
+  property :temperature, type: Integer # unit Kelvin
+
+  has_one :out, :star, type: :planet
+  has_many :out, :satellites, type: :satellite
 end
 
-class Satellite < Model
-  # radius - Km
-  attributes :id, :name, :radius
-  relationships :star, :planet
+class Satellite
+  include ActiveGraph::Node
+  include ModelParent
+
+  property :id, type: Integer
+  property :name, type: String
+  property :radius, type: Integer # radius in Km
+
+  has_one :out, :star, type: :satellite
+  has_one :out, :planet, type: :satellite
 end
 
 class SerializableStar < JSONAPI::Serializable::Resource
   type 'stars'
 
-  attributes :name, :age
+  attributes :id, :name, :age
   relationship :planets, class: 'SerializablePlanet'
   relationship :satellites, class: 'SerializableSatellite'
 end
@@ -60,7 +53,7 @@ end
 class SerializablePlanet < JSONAPI::Serializable::Resource
   type 'planets'
 
-  attributes :name, :temperature
+  attributes :id, :name, :temperature
   relationship :star, class: 'SerializableStar'
   relationship :satellites, class: 'SerializableSatellite'
 end
@@ -68,7 +61,7 @@ end
 class SerializableSatellite < JSONAPI::Serializable::Resource
   type 'satellites'
 
-  attributes :name, :radius
+  attributes :id, :name, :radius
   relationship :star, class: 'SerializableStar'
   relationship :planet, class: 'SerializablePlanet'
 end

@@ -1,4 +1,5 @@
 require 'zeitwerk'
+require 'active_graph'
 
 # Workaround for jruby prepend issue https://github.com/jruby/jruby/issues/6971
 module Graphiti

@@ -5,7 +5,6 @@ gemspec
 gem "zeitwerk"
 
 group :test do
-  gem "graphiti"
   gem "pry"
   gem "appraisal"
   gem "guard"
