@@ -18,7 +18,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "graphiti", ">= 1.2.0"
-  spec.add_dependency "activesupport", ">= 4.1"
   spec.add_dependency "activegraph", ">= 11.1.0.alpha.1"
   spec.add_dependency "zeitwerk"
 
@@ -26,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "kaminari", "~> 0.17"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "activemodel", ">= 4.1"
   spec.add_development_dependency "graphiti_spec_helpers", "1.0.beta.4"
   spec.add_development_dependency "standard"
   spec.add_development_dependency "rspec", "~> 3.9.0"
