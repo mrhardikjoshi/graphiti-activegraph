@@ -6,6 +6,7 @@ gem "zeitwerk"
 
 group :test do
   gem "activegraph", "11.1.0.alpha.4"
+  gem "graphiti"
   gem "pry"
   gem "appraisal"
   gem "guard"
