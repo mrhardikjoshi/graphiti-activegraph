@@ -58,8 +58,8 @@ module Graphiti::ActiveGraph
         model_instance
       end
 
-      def resolve(scope)
-        scope.to_a
+      def resolve(scope, resolve_to_rel = false)
+        scope.to_a(!resolve_to_rel, resolve_to_rel)
       end
 
       # def associate_all(parent, children, association_name, association_type)

@@ -39,6 +39,10 @@ module Graphiti
         query.sideloads.keys.map(&:to_sym)
       end
 
+      def resolve(scope)
+        adapter.resolve(scope, relation_resource?)
+      end
+
       def typecast(name, value, flag)
         att = get_attr!(name, flag, request: true)
 
