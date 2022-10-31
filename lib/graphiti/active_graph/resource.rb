@@ -14,16 +14,11 @@ module Graphiti
         params[:filter] ||= {}
         params[:filter][:id] = id if id
 
-        validate!(params)
-        runner = ::Graphiti::Runner.new(self, params)
-        runner.proxy(nil, single: true, raise_on_missing: false, preloaded: obj, bypass_required_filters: true)
+        build(params, nil, single: true, raise_on_missing: false, preloaded: obj, bypass_required_filters: true)
       end
 
       def all_with_preloaded(obj_arr, params)
-        validate!(params)
-
-        runner = ::Graphiti::Runner.new(self, params)
-        runner.proxy(nil, raise_on_missing: false, preloaded: obj_arr)
+        build(nil, params, raise_on_missing: false, preloaded: obj_arr)
       end
 
       def guard_nil_id!(params)

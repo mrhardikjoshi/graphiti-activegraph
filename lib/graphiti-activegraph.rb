@@ -10,6 +10,7 @@ module Graphiti
 end
 require 'graphiti/scoping/filterable'
 require 'graphiti/resource/persistence'
+require 'graphiti/resource/interface'
 # End workaround for jruby prepend issue
 
 loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
@@ -19,6 +20,7 @@ loader.setup
 
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
+Graphiti::Resource::Interface::ClassMethods.prepend Graphiti::ActiveGraph::Resource::Interface::ClassMethods
 require 'graphiti'
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
