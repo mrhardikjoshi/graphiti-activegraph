@@ -14,11 +14,11 @@ module Graphiti
         params[:filter] ||= {}
         params[:filter][:id] = id if id
 
-        build(params, nil, single: true, raise_on_missing: false, preloaded: obj, bypass_required_filters: true)
+        build(params, nil, raise_on_missing: false, preloaded: obj, bypass_required_filters: true)
       end
 
       def all_with_preloaded(obj_arr, params)
-        build(params, nil, raise_on_missing: false, preloaded: obj_arr)
+        build(params, nil, single: false, raise_on_missing: false, preloaded: obj_arr)
       end
 
       def guard_nil_id!(params)
