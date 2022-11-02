@@ -18,7 +18,7 @@ module Graphiti
       end
 
       def all_with_preloaded(obj_arr, params)
-        build(nil, params, raise_on_missing: false, preloaded: obj_arr)
+        build(params, nil, raise_on_missing: false, preloaded: obj_arr)
       end
 
       def guard_nil_id!(params)
