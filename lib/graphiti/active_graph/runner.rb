@@ -15,13 +15,13 @@ module Graphiti::ActiveGraph
 
     def proxy(base = nil, opts = {})
       base ||= jsonapi_resource.base_scope
+      preloaded = opts[:preloaded] || opts[:self_as_preloaded] ? instance_variable_get(:@jsonapi_resource) : nil
       scope_opts = opts.slice(:sideload_parent_length,
-        :default_paginate,
-        :after_resolve,
-        :sideload,
-        :parent,
-        :params,
-        :preloaded).merge(unpaginated_query: params[:unpaginated_query])
+                              :default_paginate,
+                              :after_resolve,
+                              :sideload,
+                              :parent,
+                              :params).merge(unpaginated_query: params[:unpaginated_query], preloaded: preloaded)
       scope = jsonapi_scope(base, scope_opts)
       preloaded = opts[:preloaded]
       options = { payload: deserialized_payload,
