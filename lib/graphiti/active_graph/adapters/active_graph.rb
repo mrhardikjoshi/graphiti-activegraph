@@ -40,7 +40,7 @@ module Graphiti::ActiveGraph
         if extra_field
           scope.query.order("#{attribute} #{direction}").proxy_as(scope.model, scope.identity)
         else
-          scope.order(attribute => direction)
+          scope.send(resource.relation_resource? ? :rel_order : :order, attribute => direction)
         end
       end
 
