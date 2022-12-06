@@ -1,32 +1,26 @@
 require 'zeitwerk'
-
-# Workaround for missing zeitwerk support as of jruby-9.2.13.0
-module Graphiti
-  module Scoping
-  end
-  module ActiveGraph
-    module Scoping
-    end
-    module Adapters
-    end
-    module Util
-    end
-  end
-end
-# End workaround
+require 'active_graph'
 
 # Workaround for jruby prepend issue https://github.com/jruby/jruby/issues/6971
+module Graphiti
+  module ActiveGraph
+  end
+  module Scoping
+  end
+end
 require 'graphiti/scoping/filterable'
 require 'graphiti/resource/persistence'
+require 'graphiti/resource/interface'
 # End workaround for jruby prepend issue
 
-loader = Zeitwerk::Loader.for_gem
+loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.inflector.inflect 'version' => 'VERSION'
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
 
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
 Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
+Graphiti::Resource::Interface::ClassMethods.prepend Graphiti::ActiveGraph::Resource::Interface::ClassMethods
 require 'graphiti'
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
@@ -39,3 +33,6 @@ Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
 Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
 Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
 Graphiti::Scope.prepend Graphiti::ActiveGraph::SideloadResolve
+
+# JSONAPI extensions
+JSONAPI::Serializable::Resource.prepend Graphiti::ActiveGraph::JsonapiExt::Serializable::ResourceExt

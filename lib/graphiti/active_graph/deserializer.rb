@@ -91,7 +91,7 @@ module Graphiti::ActiveGraph
       params[:data][:relationships] ||= {}
       params[:data][:relationships][rel_name] = {
         data: {
-          type: rel_name.to_s,
+          type: derive_resource_type(rel_name),
           id: path_value.to_i
         }
       }
@@ -122,7 +122,29 @@ module Graphiti::ActiveGraph
     end
 
     def detect_conflict(key, path_value, body_value)
-      raise Conflict.new(key, path_value, body_value) if body_value && body_value != path_value
+      raise Conflict.new(key, path_value, body_value) if path_value && body_value && body_value != path_value
+    end
+
+    private
+
+    def derive_resource_type(rel_name)
+      if @model.include?(ActiveGraph::Node)
+        @model.associations[rel_name].target_class.model_name.plural.to_s
+      else
+        # ApplicationRelationship resource doesn't have #associations or any other method to list all associations
+        # "from_class" and "to_class" methods can contain value "any". Which makes it unreliable to use here
+        # Using "rel_name.to_s.pluralize" as it works in most cases.
+        # User can define a method on controller "" which will override this behaviour
+        derive_resource_type_from_controller(rel_name) || rel_name.to_s.pluralize
+      end
+    end
+
+    def derive_resource_type_from_controller(rel_name)
+      controller_obj.derive_parent_resource_type(rel_name) if controller_obj.respond_to?(:derive_parent_resource_type)
+    end
+
+    def controller_obj
+      @controller_obj ||= Graphiti.context[:object]
     end
   end
 end

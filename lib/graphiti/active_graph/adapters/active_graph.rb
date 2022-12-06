@@ -40,7 +40,7 @@ module Graphiti::ActiveGraph
         if extra_field
           scope.query.order("#{attribute} #{direction}").proxy_as(scope.model, scope.identity)
         else
-          scope.order(attribute => direction)
+          scope.send(resource.relation_resource? ? :rel_order : :order, attribute => direction)
         end
       end
 
@@ -58,8 +58,8 @@ module Graphiti::ActiveGraph
         model_instance
       end
 
-      def resolve(scope)
-        scope.to_a
+      def resolve(scope, resolve_to_rel = false)
+        resolve_to_rel ? scope.to_a(false, true) : scope.to_a
       end
 
       # def associate_all(parent, children, association_name, association_type)
