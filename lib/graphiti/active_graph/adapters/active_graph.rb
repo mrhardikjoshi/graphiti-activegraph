@@ -147,8 +147,11 @@ module Graphiti::ActiveGraph
       end
 
       def process_relationship_attrs(x, rel_attrs, assign_multiple)
-        x[:object] = x[:resource]
-          .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
+        id = x.dig(:attributes, :id)
+        x[:object] = x[:resource].model.find(id) if id
+
+        # x[:object] = x[:resource]
+        #   .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
 
         resource = @persistence.instance_variable_get(:@resource)
         meta = @persistence.instance_variable_get(:@meta)
