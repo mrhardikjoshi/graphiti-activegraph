@@ -26,6 +26,12 @@ Features:
 
 - Relationships mentioned in sparse field param (and not in include), will now be returned in relationship block of response
 
+## 0.1.20
+
+Features:
+
+- Disableing call save on reationships objects on a post/put request. Disabling sidepost. We can update relationships as earlier on post/put requests.
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
