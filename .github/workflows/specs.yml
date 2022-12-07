@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ jruby, ruby ]
+        ruby-version: [ jruby-9.3.8.0, ruby ]
 
     steps:
     - uses: actions/checkout@v3
