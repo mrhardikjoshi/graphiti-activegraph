@@ -150,6 +150,9 @@ module Graphiti::ActiveGraph
         id = x.dig(:attributes, :id)
         x[:object] = x[:resource].model.find(id) if id
 
+        # this was triggering save on relationship objects, which is not neccessary as we are not
+        # supporting sideposting. While updating relationships, this would cause validations on relationships
+        # to trigger, making API slow for complex validations on relationship objects.
         # x[:object] = x[:resource]
         #   .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
 
