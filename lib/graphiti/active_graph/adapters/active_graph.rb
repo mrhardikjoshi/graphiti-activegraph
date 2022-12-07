@@ -147,8 +147,7 @@ module Graphiti::ActiveGraph
       end
 
       def process_relationship_attrs(x, rel_attrs, assign_multiple)
-        id = x.dig(:attributes, :id)
-        x[:object] = x[:resource].model.find(id) if id
+        x[:object] = find_record(x)
 
         # this was triggering save on relationship objects, which is not neccessary as we are not
         # supporting sideposting. While updating relationships, this would cause validations on relationships
@@ -175,6 +174,11 @@ module Graphiti::ActiveGraph
         else
           rel_map[:object]
         end
+      end
+
+      def find_record(x)
+        id = x.dig(:attributes, :id)
+        x[:resource].model.find(id) if id
       end
     end
   end
