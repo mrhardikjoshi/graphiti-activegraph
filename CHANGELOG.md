@@ -30,7 +30,7 @@ Features:
 
 Features:
 
-- With graphiti config variable "allow_sidepost" you can allow/disallow sideposting.
+- With graphiti config variable "allow_sidepost" you can allow/disallow sideposting, by default it is allowed.
 
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
