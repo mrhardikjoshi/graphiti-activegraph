@@ -30,7 +30,7 @@ Features:
 
 Features:
 
-- Disableing call save on reationships objects on a post/put request. Disabling sidepost. We can update relationships as earlier on post/put requests.
+- Disabling calling save on relationship objects on a post/put requests. Disabling sideposting. We can update relationships as earlier on post/put requests.
 
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
