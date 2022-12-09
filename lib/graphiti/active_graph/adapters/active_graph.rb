@@ -148,13 +148,6 @@ module Graphiti::ActiveGraph
 
       def process_relationship_attrs(x, rel_attrs, assign_multiple)
         x[:object] = find_record(x)
-
-        # this was triggering save on relationship objects, which is not neccessary as we are not
-        # supporting sideposting. While updating relationships, this would cause validations on relationships
-        # to trigger, making API slow for complex validations on relationship objects.
-        # x[:object] = x[:resource]
-        #   .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
-
         resource = @persistence.instance_variable_get(:@resource)
         meta = @persistence.instance_variable_get(:@meta)
         # Relationship start/end nodes cannot be changed once persisted
@@ -177,8 +170,13 @@ module Graphiti::ActiveGraph
       end
 
       def find_record(x)
-        id = x.dig(:attributes, :id)
-        x[:resource].model.find(id) if id
+        if Rails.application.config.respond_to?(:sidepost_allowed) && Rails.application.config.sidepost_allowed
+          x[:object] = x[:resource]
+            .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
+        else
+          id = x.dig(:attributes, :id)
+          x[:resource].model.find(id) if id
+        end
       end
     end
   end
