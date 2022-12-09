@@ -170,12 +170,12 @@ module Graphiti::ActiveGraph
       end
 
       def find_record(x)
-        if Graphiti.config.respond_to?(:allow_sidepost) && !Graphiti.config.allow_sidepost
-          id = x.dig(:attributes, :id)
-          x[:resource].model.find(id) if id
-        else
+        if Graphiti.config.allow_sidepost
           x[:object] = x[:resource]
             .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
+        else
+          id = x.dig(:attributes, :id)
+          x[:resource].model.find(id) if id
         end
       end
     end
