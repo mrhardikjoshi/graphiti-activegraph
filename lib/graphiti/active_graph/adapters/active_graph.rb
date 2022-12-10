@@ -147,9 +147,7 @@ module Graphiti::ActiveGraph
       end
 
       def process_relationship_attrs(x, rel_attrs, assign_multiple)
-        x[:object] = x[:resource]
-          .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
-
+        x[:object] = find_record(x)
         resource = @persistence.instance_variable_get(:@resource)
         meta = @persistence.instance_variable_get(:@meta)
         # Relationship start/end nodes cannot be changed once persisted
@@ -168,6 +166,16 @@ module Graphiti::ActiveGraph
           nil
         else
           rel_map[:object]
+        end
+      end
+
+      def find_record(x)
+        if Graphiti.config.allow_sidepost
+          x[:object] = x[:resource]
+            .persist_with_relationships(x[:meta], x[:attributes], x[:relationships], self, x[:foreign_key])
+        else
+          id = x.dig(:attributes, :id)
+          x[:resource].model.find(id) if id
         end
       end
     end

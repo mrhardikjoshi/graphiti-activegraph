@@ -26,6 +26,12 @@ Features:
 
 - Relationships mentioned in sparse field param (and not in include), will now be returned in relationship block of response
 
+## 0.1.20
+
+Features:
+
+- With graphiti config variable "allow_sidepost" you can allow/disallow sideposting, by default it is allowed.
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
