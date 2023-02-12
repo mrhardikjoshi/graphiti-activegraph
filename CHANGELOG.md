@@ -32,6 +32,12 @@ Features:
 
 - With graphiti config variable "allow_sidepost" you can allow/disallow sideposting, by default it is allowed.
 
+## 0.1.21
+
+Fixes:
+
+- Runner#proxy keyword arguments
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
