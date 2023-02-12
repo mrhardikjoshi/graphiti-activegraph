@@ -32,7 +32,7 @@ module Graphiti::ActiveGraph
       ::Graphiti::ResourceProxy.new jsonapi_resource,
         scope,
         query,
-        options
+        **options
     end
   end
 end
