@@ -14,7 +14,7 @@ module Graphiti
         params[:filter] ||= {}
         params[:filter][:id] = id if id
 
-        build(params, nil, raise_on_missing: false, preloaded: obj, bypass_required_filters: true)
+        build(params, nil, raise_on_missing: false, preloaded: obj)
       end
 
       def all_with_preloaded(obj_arr, params)
