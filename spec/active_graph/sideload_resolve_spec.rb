@@ -4,14 +4,14 @@ RSpec.describe Graphiti::Scope do
       let(:resource) { Graphiti::Resource.new }
       let(:query) { {} }
   
-      it 'does not call apply_scoping when :preloaded is present in opts' do
+      it 'does not call around_scoping when :preloaded is present in opts' do
         opts = {preloaded: {foo: 1}}
 
         expect(resource).not_to receive(:around_scoping)
         sideload_resolver = described_class.new(object, resource, query, opts)
       end
 
-      it 'calls apply_scoping when :preloaded is not present in opts' do
+      it 'calls around_scoping when :preloaded is not present in opts' do
         opts = {}
 
         expect(resource).to receive(:around_scoping)
