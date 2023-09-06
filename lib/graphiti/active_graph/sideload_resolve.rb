@@ -6,7 +6,6 @@ module Graphiti::ActiveGraph
       @query = query
       @opts = opts
 
-      opts[:query_obj] = @query
       @unpaginated_object = opts[:unpaginated_query].presence || @object
       return if opts[:preloaded]
       @object = @resource.around_scoping(@object, @query.hash) { |scope|
