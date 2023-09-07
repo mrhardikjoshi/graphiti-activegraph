@@ -38,6 +38,12 @@ Fixes:
 
 - Runner#proxy keyword arguments
 
+## 0.1.22
+
+Fixes:
+
+- when rendering preloaded resources, we were not applying scoping. Now we are skipping around_scoping callback too.
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
