@@ -40,7 +40,7 @@ module Graphiti::ActiveGraph
     end
 
     def stats
-      @stats ||= if @query.hash[:stats] && !resource.relation_resource?
+      @stats ||= if @query.stats && !resource.relation_resource?
         payload = ::Graphiti::Stats::Payload.new @resource,
           @query,
           @scope.unpaginated_object,
