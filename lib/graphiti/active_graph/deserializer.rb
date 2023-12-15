@@ -68,7 +68,7 @@ module Graphiti::ActiveGraph
       path_map.each do |rel_name, path_value|
         body_value = relationships.dig(rel_name, :attributes, :id)
         if body_value
-          detect_conflict(rel_name, path_value.to_i, body_value&.to_i)
+          detect_conflict(rel_name, path_value, body_value)
         else
           update_params(params, rel_name, path_value)
           update_realationships(rel_name, path_value)
@@ -92,13 +92,13 @@ module Graphiti::ActiveGraph
       params[:data][:relationships][rel_name] = {
         data: {
           type: derive_resource_type(rel_name),
-          id: path_value.to_i
+          id: path_value
         }
       }
     end
 
     def update_realationships(rel_name, path_value)
-      relationships[rel_name] = { meta: {}, attributes: { id: path_value.to_i } }
+      relationships[rel_name] = { meta: {}, attributes: { id: path_value } }
     end
 
     def path_map

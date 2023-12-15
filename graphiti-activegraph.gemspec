@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "graphiti", ">= 1.2.0"
-  spec.add_dependency "activegraph", ">= 11.1.0.alpha.1"
+  spec.add_dependency "activegraph", ">= 11.5.0.alpha.1"
   spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "faraday", "~> 0.15"
