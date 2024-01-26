@@ -64,11 +64,11 @@ module Graphiti::ActiveGraph
 
     def add_path_id_to_relationships!(params)
       return params if path_relationships_updated?
-      detect_conflict(:id, @params[:id], attributes[:id])
+      detect_conflict(:id, @params[:id]&.to_s, attributes[:id]&.to_s)
       path_map.each do |rel_name, path_value|
         body_value = relationships.dig(rel_name, :attributes, :id)
         if body_value
-          detect_conflict(rel_name, path_value, body_value)
+          detect_conflict(rel_name, path_value&.to_s, body_value&.to_s)
         else
           update_params(params, rel_name, path_value)
           update_realationships(rel_name, path_value)
