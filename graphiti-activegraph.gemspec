@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   # freezing version of activegraph here to 11.x
   # to ensure it doesn't use 12.x till following fix is propgated in to 12.x
   # https://github.com/neo4jrb/activegraph/pull/1717
-  spec.add_dependency "activegraph", "~> 11.5.0.beta.3"
+  spec.add_dependency "activegraph", "~> 12.0.0.beta.4"
   spec.add_dependency "activesupport", ">= 6.0"
   spec.add_dependency "zeitwerk"
 
