@@ -1,4 +1,4 @@
-require 'zeitwerk'
+require 'active_support'
 require 'active_graph'
 
 # Workaround for jruby prepend issue https://github.com/jruby/jruby/issues/6971
@@ -13,6 +13,7 @@ require 'graphiti/resource/persistence'
 require 'graphiti/resource/interface'
 # End workaround for jruby prepend issue
 
+require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.inflector.inflect 'version' => 'VERSION'
 loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
