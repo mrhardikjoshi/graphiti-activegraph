@@ -1,15 +1,11 @@
 class Graphiti::ActiveGraph::Adapters::ActiveGraph::PolymorphicBelongsTo < Graphiti::Sideload::PolymorphicBelongsTo
   include Graphiti::ActiveGraph::Adapters::ActiveGraph::Sideload
 
-  def default_base_scope
-    resource_class.model.all
-  end
-
-  def infer_foreign_key
-    association_name.to_sym
-  end
-
   def default_value_when_empty
     nil
+  end
+
+  def polymorphic?
+    true
   end
 end
