@@ -23,10 +23,15 @@ jobs:
       JRUBY_OPTS: --debug -J-Xmx1280m -Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
+
+    - name: Install dependencies
+        run: bundle update
+
     - name: Run tests
       run: bundle exec rspec
