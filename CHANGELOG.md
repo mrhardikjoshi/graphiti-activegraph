@@ -44,6 +44,12 @@ Fixes:
 
 - when rendering preloaded resources, we were not applying scoping. Now we are skipping around_scoping callback too.
 
+## 0.1.22 (29-04-2024)
+
+Features:
+
+- Added support for UUID
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
