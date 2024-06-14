@@ -1,5 +1,5 @@
 class Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload < Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload
-  class_attribute :function_proc
+  class_attribute :function_proc, :param_proc
 
   def association?
     false
@@ -7,5 +7,9 @@ class Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload < Graphiti:
 
   def self.function_proc(proc)
     self.function_proc = proc
+  end
+
+  def self.param_proc(proc)
+    self.param_proc = proc
   end
 end
