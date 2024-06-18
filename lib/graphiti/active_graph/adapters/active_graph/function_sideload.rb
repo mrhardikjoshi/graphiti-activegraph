@@ -5,11 +5,11 @@ class Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload < Graphiti:
     false
   end
 
-  def self.function_proc(proc)
-    self.function_proc = proc
+  def self.function_proc(&blk)
+    self.function_proc = blk
   end
 
-  def self.param_proc(proc)
-    self.param_proc = proc
+  def self.param_proc(&blk)
+    self.param_proc = blk
   end
 end
