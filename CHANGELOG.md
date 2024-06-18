@@ -44,11 +44,17 @@ Fixes:
 
 - when rendering preloaded resources, we were not applying scoping. Now we are skipping around_scoping callback too.
 
-## 0.1.22 (29-04-2024)
+## 0.1.23 (29-04-2024)
 
 Features:
 
 - Added support for UUID
+
+## 0.1.24 (18-06-2024)
+
+Features:
+
+- Added preliminary support for Sideload backed by function instead of model association
 
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
