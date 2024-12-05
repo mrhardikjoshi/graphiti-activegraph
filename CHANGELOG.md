@@ -56,6 +56,12 @@ Features:
 
 - Added preliminary support for Sideload backed by function instead of model association
 
+## 0.1.25 (04-12-2024)
+
+Features:
+
+- Added support to preload extra_fields for the main resource, replacing N+1 queries with a single query. This does not apply to sideloaded resources.
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->

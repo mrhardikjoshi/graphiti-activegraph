@@ -23,11 +23,19 @@ module Graphiti
 
       def guard_nil_id!(params)
       end
+
+      def extra_attribute?(name)
+        extra_attributes.has_key?(name)
+      end
     end
 
     module ResourceInstanceMethods
       def relation_resource?
         self.class.relation_resource?
+      end
+
+      def extra_attribute?(name)
+        self.class.extra_attribute?(name)
       end
 
       def sideload_name_arr(query)

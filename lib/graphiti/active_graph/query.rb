@@ -45,10 +45,5 @@ module Graphiti::ActiveGraph
     def sort_criteria(sort)
       sort.split(',').map(&method(:sort_hash)).map(&method(:parse_sort_criteria_hash))
     end
-
-    def update_include_hash(authorized_include_param)
-      @include_hash = authorized_include_param
-      @sideloads = nil
-    end
   end
 end
