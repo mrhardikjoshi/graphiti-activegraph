@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph
-  module Deserializer
+  class Deserializer < Graphiti::Deserializer
     class Conflict < StandardError
       attr_reader :key, :path_value, :body_value
 
@@ -14,13 +14,35 @@ module Graphiti::ActiveGraph
       end
     end
 
-    def initialize(payload, env=nil, model=nil, parent_map=nil)
+    def initialize(payload, env = nil, model = nil, parent_map = nil)
       super(payload)
 
       @params = payload
       @model = model
       @parent_map = parent_map || {}
       @env = env
+
+      return unless data.blank? && env && parsable_content?(env)
+
+      require 'pry'
+      binding.pry
+      raise ArgumentError, "JSON API payload must contain the 'data' key" 
+    end
+
+    def process_relationship_datum(datum)
+      {
+        meta: {
+          jsonapi_type: datum[:type],
+          temp_id: datum[:'temp-id'],
+          method: datum[:method]&.to_sym
+        },
+        attributes: datum[:id] ? { id: datum[:id] } : {},
+        relationships: {}
+      }
+    end
+
+    def meta_params
+      data[:meta] || {}
     end
 
     def process_relationships(relationship_hash)
@@ -31,6 +53,10 @@ module Graphiti::ActiveGraph
           hash[name] = data_payload.nil? ? process_nil_relationship(name) : process_relationship(relationship_payload[:data])
         end
       end
+    end
+
+    def relationship?(name)
+      relationships[name.to_sym].present?
     end
 
     # change empty relationship as `disassociate` hash so they will be removed
@@ -123,6 +149,10 @@ module Graphiti::ActiveGraph
 
     def detect_conflict(key, path_value, body_value)
       raise Conflict.new(key, path_value, body_value) if path_value && body_value && body_value != path_value
+    end
+
+    def parsable_content?(env)
+      true
     end
 
     private

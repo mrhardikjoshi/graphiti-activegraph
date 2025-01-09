@@ -1,6 +1,6 @@
-RSpec.describe Graphiti::Deserializer do
+RSpec.describe Graphiti::ActiveGraph::Deserializer do
   describe '#update_params' do
-    let(:params) { {} }
+    let(:params) { {data: {'type': 'planet'}} }
     let(:env) { {} }
     let(:model) { Planet }
     let(:parent_map) { {} }
@@ -8,7 +8,7 @@ RSpec.describe Graphiti::Deserializer do
     let(:path_value) { 108 }
     let(:rel_params) { params[:data][:relationships] }
 
-    subject { Graphiti::Deserializer.new(params, env, model, parent_map) }
+    subject { described_class.new(params, env, model, parent_map) }
 
     before do
       subject.update_params(params, rel_name, path_value)
