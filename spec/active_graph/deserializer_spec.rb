@@ -11,7 +11,7 @@ RSpec.describe Graphiti::ActiveGraph::Deserializer do
     subject { described_class.new(params, env, model, parent_map) }
 
     before do
-      subject.update_params(params, rel_name, path_value)
+      subject.send(:update_params, params, rel_name, path_value)
     end
 
     it 'updates params with correct relationships hash' do

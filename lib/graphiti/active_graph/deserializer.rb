@@ -1,5 +1,7 @@
 module Graphiti::ActiveGraph
   class Deserializer < Graphiti::Deserializer
+    include Concerns::PathRelationships
+
     class Conflict < StandardError
       attr_reader :key, :path_value, :body_value
 
@@ -86,45 +88,6 @@ module Graphiti::ActiveGraph
       results
     end
 
-    def add_path_id_to_relationships!(params)
-      return params if path_relationships_updated?
-      detect_conflict(:id, @params[:id]&.to_s, attributes[:id]&.to_s)
-      path_map.each do |rel_name, path_value|
-        body_value = relationships.dig(rel_name, :attributes, :id)
-        if body_value
-          detect_conflict(rel_name, path_value&.to_s, body_value&.to_s)
-        else
-          update_params(params, rel_name, path_value)
-          update_realationships(rel_name, path_value)
-        end
-      end
-      path_relationships_updated!
-      params
-    end
-
-    def path_relationships_updated!
-      @path_relationships_updated = true
-    end
-
-    def path_relationships_updated?
-      @path_relationships_updated.present?
-    end
-
-    def update_params(params, rel_name, path_value)
-      params[:data] ||= {}
-      params[:data][:relationships] ||= {}
-      params[:data][:relationships][rel_name] = {
-        data: {
-          type: derive_resource_type(rel_name),
-          id: path_value
-        }
-      }
-    end
-
-    def update_realationships(rel_name, path_value)
-      relationships[rel_name] = { meta: {}, attributes: { id: path_value } }
-    end
-
     def path_map
       map = @params.select { |key, _| key =~ /_id$/ }.permit!.to_h
       map = filter_keys(map) { |key| key.gsub(/_id$/, '').to_sym }
@@ -149,11 +112,11 @@ module Graphiti::ActiveGraph
       raise Conflict.new(key, path_value, body_value) if path_value && body_value && body_value != path_value
     end
 
+    private
+
     def parsable_content?(env)
       true
     end
-
-    private
 
     def derive_resource_type(rel_name)
       if @model.include?(ActiveGraph::Node)
