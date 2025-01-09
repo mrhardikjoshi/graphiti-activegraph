@@ -24,8 +24,6 @@ module Graphiti::ActiveGraph
 
       return unless data.blank? && env && parsable_content?(env)
 
-      require 'pry'
-      binding.pry
       raise ArgumentError, "JSON API payload must contain the 'data' key" 
     end
 
