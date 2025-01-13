@@ -27,7 +27,6 @@ Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
 Graphiti::Util::SerializerAttribute.prepend Graphiti::ActiveGraph::Util::SerializerAttribute
 Graphiti::Util::RelationshipPayload.prepend Graphiti::ActiveGraph::Util::RelationshipPayload
-Graphiti::Deserializer.prepend Graphiti::ActiveGraph::Deserializer
 Graphiti::Query.prepend Graphiti::ActiveGraph::Query
 Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
 Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
@@ -35,6 +34,7 @@ Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
 Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
 Graphiti::Scope.prepend Graphiti::ActiveGraph::SideloadResolve
 Graphiti::Configuration.include Graphiti::SidepostConfiguration
+Graphiti::RequestValidators::Validator.prepend Graphiti::ActiveGraph::RequestValidators::Validator
 
 # JSONAPI extensions
 JSONAPI::Serializable::Resource.prepend Graphiti::ActiveGraph::JsonapiExt::Serializable::ResourceExt

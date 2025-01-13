@@ -1,5 +1,7 @@
 module Graphiti::ActiveGraph
-  module Deserializer
+  class Deserializer < Graphiti::Deserializer
+    include Concerns::PathRelationships
+
     class Conflict < StandardError
       attr_reader :key, :path_value, :body_value
 
@@ -14,13 +16,33 @@ module Graphiti::ActiveGraph
       end
     end
 
-    def initialize(payload, env=nil, model=nil, parent_map=nil)
+    def initialize(payload, env = nil, model = nil, parent_map = nil)
       super(payload)
 
       @params = payload
       @model = model
       @parent_map = parent_map || {}
       @env = env
+
+      return unless data.blank? && env && parsable_content?
+
+      raise ArgumentError, "JSON API payload must contain the 'data' key" 
+    end
+
+    def process_relationship_datum(datum)
+      {
+        meta: {
+          jsonapi_type: datum[:type],
+          temp_id: datum[:'temp-id'],
+          method: datum[:method]&.to_sym
+        },
+        attributes: datum[:id] ? { id: datum[:id] } : {},
+        relationships: {}
+      }
+    end
+
+    def meta_params
+      data[:meta] || {}
     end
 
     def process_relationships(relationship_hash)
@@ -31,6 +53,10 @@ module Graphiti::ActiveGraph
           hash[name] = data_payload.nil? ? process_nil_relationship(name) : process_relationship(relationship_payload[:data])
         end
       end
+    end
+
+    def relationship?(name)
+      relationships[name.to_sym].present?
     end
 
     # change empty relationship as `disassociate` hash so they will be removed
@@ -62,45 +88,6 @@ module Graphiti::ActiveGraph
       results
     end
 
-    def add_path_id_to_relationships!(params)
-      return params if path_relationships_updated?
-      detect_conflict(:id, @params[:id]&.to_s, attributes[:id]&.to_s)
-      path_map.each do |rel_name, path_value|
-        body_value = relationships.dig(rel_name, :attributes, :id)
-        if body_value
-          detect_conflict(rel_name, path_value&.to_s, body_value&.to_s)
-        else
-          update_params(params, rel_name, path_value)
-          update_realationships(rel_name, path_value)
-        end
-      end
-      path_relationships_updated!
-      params
-    end
-
-    def path_relationships_updated!
-      @path_relationships_updated = true
-    end
-
-    def path_relationships_updated?
-      @path_relationships_updated.present?
-    end
-
-    def update_params(params, rel_name, path_value)
-      params[:data] ||= {}
-      params[:data][:relationships] ||= {}
-      params[:data][:relationships][rel_name] = {
-        data: {
-          type: derive_resource_type(rel_name),
-          id: path_value
-        }
-      }
-    end
-
-    def update_realationships(rel_name, path_value)
-      relationships[rel_name] = { meta: {}, attributes: { id: path_value } }
-    end
-
     def path_map
       map = @params.select { |key, _| key =~ /_id$/ }.permit!.to_h
       map = filter_keys(map) { |key| key.gsub(/_id$/, '').to_sym }
@@ -126,6 +113,10 @@ module Graphiti::ActiveGraph
     end
 
     private
+
+    def parsable_content?
+      true
+    end
 
     def derive_resource_type(rel_name)
       if @model.include?(ActiveGraph::Node)
