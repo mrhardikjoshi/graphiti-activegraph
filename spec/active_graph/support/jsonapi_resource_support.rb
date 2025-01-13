@@ -65,3 +65,9 @@ class SerializableSatellite < JSONAPI::Serializable::Resource
   relationship :star, class: 'SerializableStar'
   relationship :planet, class: 'SerializablePlanet'
 end
+
+class PlanetResource < Graphiti::Resource
+  attribute :id, :integer, writable: false
+  attribute :name, :string
+  attribute :temperature, :integer
+end

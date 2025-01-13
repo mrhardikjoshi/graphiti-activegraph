@@ -28,22 +28,11 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     private
 
     def last_segment_attribute?(model, segments)
-      segments.each_with_index do |segment, index|
-        return attribute?(model, segment) if index == segments.size - 1
-
-        model = associated_model(model, segment)
-        return false unless model
-      end || false
-    end
-
-    def last_segment_attribute?(model, segments)
       last_segment = segments.last
       intermediate_model = traverse_to_last_associated_model(model, segments[0...-1])
 
       intermediate_model && attribute?(intermediate_model, last_segment)
     end
-
-    private
 
     def traverse_to_last_associated_model(model, intermediate_segments)
       intermediate_segments.each do |segment|
