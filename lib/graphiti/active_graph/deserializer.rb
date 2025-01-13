@@ -24,7 +24,7 @@ module Graphiti::ActiveGraph
       @parent_map = parent_map || {}
       @env = env
 
-      return unless data.blank? && env && parsable_content?(env)
+      return unless data.blank? && env && parsable_content?
 
       raise ArgumentError, "JSON API payload must contain the 'data' key" 
     end
@@ -114,7 +114,7 @@ module Graphiti::ActiveGraph
 
     private
 
-    def parsable_content?(env)
+    def parsable_content?
       true
     end
 
