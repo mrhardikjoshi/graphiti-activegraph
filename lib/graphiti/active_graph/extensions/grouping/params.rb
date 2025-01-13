@@ -22,26 +22,18 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     def ends_with_attribute?(model, criteria)
       return false if criteria.blank?
 
-      segments = criteria.split('.')
-      traverse_segments(model, segments)
+      last_segment_attribute?(model, criteria.split('.'))
     end
 
     private
 
-    def traverse_segments(model, segments)
+    def last_segment_attribute?(model, segments)
       segments.each_with_index do |segment, index|
-        if last_segment?(segments, index)
-          return attribute?(model, segment)
-        end
+        return attribute?(model, segment) if index == segments.size - 1
 
-        return false unless (model = associated_model(model, segment))
-      end
-
-      false
-    end
-
-    def last_segment?(segments, index)
-      index == segments.size - 1
+        model = associated_model(model, segment)
+        return false unless model
+      end || false
     end
 
     def attribute?(model, segment)
@@ -49,8 +41,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     end
 
     def associated_model(model, segment)
-      association = model.associations[segment.to_sym]
-      association&.target_class
+      model.associations[segment.to_sym]&.target_class
     end
   end
 end
