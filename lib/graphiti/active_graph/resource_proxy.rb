@@ -26,6 +26,8 @@ module Graphiti::ActiveGraph
       @single ? data_for_preloaded_record : data_for_preloaded_records
     end
 
+    alias_method :resolve_data, :data
+
     def data_for_preloaded_record
       @preloaded = @preloaded.is_a?(Array) ? @preloaded[0] : @preloaded
       @resource.decorate_record(@preloaded)

@@ -4,7 +4,7 @@ module Graphiti::ActiveGraph
       extend ActiveSupport::Concern
       class_methods do
         def build(params, base_scope = nil, opts = {})
-          validate!(params)
+          validate_request!(params)
           runner = ::Graphiti::Runner.new(self, params)
           runner.proxy(base_scope, { single: true, raise_on_missing: true }.merge(opts) )
         end
