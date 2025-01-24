@@ -62,7 +62,7 @@ Features:
 
 - Added support to preload extra_fields for the main resource, replacing N+1 queries with a single query. This does not apply to sideloaded resources.
 
-## 0.1.25 (01-24-2025)
+## 0.2.0 (01-24-2025)
 
 Features:
 
