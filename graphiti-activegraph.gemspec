@@ -19,15 +19,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "graphiti", ">= 1.2.0"
   spec.add_dependency "activegraph", "~> 12.0.0.beta.4"
-  spec.add_dependency "activesupport", ">= 6.0"
-  spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "faraday", "~> 0.15"
   spec.add_development_dependency "kaminari", "~> 0.17"
   spec.add_development_dependency "bundler"
-  # dependency conflict introduced during runtime
-  # jar-dependencies is a default gem in JRuby and also a dependency in neo4j-ruby-driver
-  spec.add_development_dependency "jar-dependencies", "~> 0.4.1"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "graphiti_spec_helpers", "1.0.beta.4"
   spec.add_development_dependency "standard"
