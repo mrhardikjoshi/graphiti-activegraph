@@ -62,6 +62,17 @@ Features:
 
 - Added support to preload extra_fields for the main resource, replacing N+1 queries with a single query. This does not apply to sideloaded resources.
 
+## 0.2.0 (01-24-2025)
+
+Features:
+
+- Added MRI support
+- Added support for rails 8
+
+Breaking changes:
+
+- Removed support for graphiti <= 1.6.3
+
 <!-- ### [version (DD-MM-YYYY)] -->
 <!-- Breaking changes:-->
 <!-- Features:-->
