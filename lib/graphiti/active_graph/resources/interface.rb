@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph
-  module Resource
+  module Resources
     module Interface
       extend ActiveSupport::Concern
       class_methods do

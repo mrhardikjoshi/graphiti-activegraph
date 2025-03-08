@@ -1,7 +1,7 @@
 RSpec.describe Graphiti::Scope do
   describe '#bypass_scoping' do
     let(:object) { {} }
-    let(:resource) { Graphiti::Resource.new }
+    let(:resource) { Graphiti::ActiveGraph::Resource.new }
     let(:query) { {} }
 
     it 'does not call around_scoping when :preloaded is present in opts' do
