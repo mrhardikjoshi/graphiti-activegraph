@@ -1,7 +1,8 @@
 # Graphiti ActiveGraph
 
 [![Gem Version](https://badge.fury.io/rb/graphiti-activegraph.svg)](https://badge.fury.io/rb/graphiti-activegraph) [![Build Status](https://github.com/mrhardikjoshi/graphiti-activegraph/actions/workflows/specs.yml/badge.svg?branch=master)](https://github.com/mrhardikjoshi/graphiti-activegraph/actions?query=branch%3Amaster) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
-An adapter to make Graphiti work with the ActiveGraph(former Neo4jrb) OGM. This gem allows you to easily build [jsonapi.org](https://jsonapi.org)-compatible APIs for GraphDB using [Graphiti](https://www.graphiti.dev) and [ActiveGraph](https://github.com/neo4jrb/activegraph). 
+
+An adapter to make Graphiti work with the ActiveGraph(former Neo4jrb) OGM. This gem allows you to easily build [jsonapi.org](https://jsonapi.org) compatible APIs for GraphDB using [Graphiti](https://www.graphiti.dev) and [ActiveGraph](https://github.com/neo4jrb/activegraph). 
 
 ### Installation
 Add this line to your application's `Gemfile`:
@@ -21,12 +22,12 @@ gem install graphiti-activegraph
 
 
 ## Usage
-To use Graphiti ActiveGraph in your application, While create a Resource, inherit it from `Graphiti::ActiveGraph::Resource`
+While defining a Resource class, inherit it from `Graphiti::ActiveGraph::Resource`
 ```ruby
 class PlanetResource < Graphiti::ActiveGraph::Resource
 ```
 
-For model backed by `ApplicationRelationship` instead of `ApplicationNode`, we have to set `relationship_resource` to `true` in resource class.
+For model backed by `ApplicationRelationship` instead of `ApplicationNode`, we have to set `relationship_resource` to `true` while defining resource class.
 ```ruby
 class RelationshipBackedResource < Graphiti::ActiveGraph::Resource
   self.relationship_resource = true
