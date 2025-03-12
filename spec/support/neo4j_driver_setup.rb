@@ -1,5 +1,5 @@
 def set_default_driver
-  server_url = ENV['NEO4J_URL'] || 'neo4j://localhost:7689'
+  server_url = ENV['NEO4J_URL'] || 'neo4j://localhost:7474'
   user = ENV['NEO4J_USER'] || 'neo4j'
   pass = ENV['NEO4J_PASS'] || 'password'
 
