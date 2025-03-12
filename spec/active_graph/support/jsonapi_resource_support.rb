@@ -8,6 +8,7 @@ end
 
 class Star
   include ActiveGraph::Node
+  id_property :neo_id
   include ModelParent
 
   property :id, type: Integer
@@ -20,6 +21,7 @@ end
 
 class Planet
   include ActiveGraph::Node
+  id_property :neo_id
   include ModelParent
 
   property :id, type: Integer
@@ -32,6 +34,7 @@ end
 
 class Satellite
   include ActiveGraph::Node
+  id_property :neo_id
   include ModelParent
 
   property :id, type: Integer

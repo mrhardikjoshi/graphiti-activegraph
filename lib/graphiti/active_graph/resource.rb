@@ -7,6 +7,14 @@ module Graphiti
       include Extensions::Resources::Rel
 
       self.adapter = Adapters::ActiveGraph
+      self.abstract_class = true
+
+      def self.use_uuid
+        define_singleton_method(:inherited) do |klass|
+          super(klass)
+          klass.attribute :id, :uuid
+        end
+      end
 
       def self.guard_nil_id!(params)
       end
@@ -32,7 +40,7 @@ module Graphiti
       end
 
       def build_scope(base, query, opts = {})
-        Scope.new(base, self, query, opts)
+        scoping_class.new(base, self, query, opts)
       end
 
       def handle_includes(scope, includes, sorts, **opts)
@@ -77,6 +85,10 @@ module Graphiti
       end
 
       private
+
+      def scoping_class
+        Scope
+      end
 
       def update_foreign_key(*)
         true
