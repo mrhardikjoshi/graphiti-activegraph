@@ -2,7 +2,7 @@ module Graphiti
   module ActiveGraph
     class Resource < Graphiti::Resource
       include Extensions::Resources::Authorizationable
-      include Extensions::Resources::PayloadCobinable
+      include Extensions::Resources::PayloadCombinable
       include Extensions::Resources::Preloadable
       include Extensions::Resources::Rel
 

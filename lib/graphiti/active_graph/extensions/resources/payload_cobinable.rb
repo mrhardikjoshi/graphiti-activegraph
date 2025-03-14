@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph::Extensions::Resources
-  module PayloadCobinable
+  module PayloadCombinable
     extend ActiveSupport::Concern
 
     class_methods do
