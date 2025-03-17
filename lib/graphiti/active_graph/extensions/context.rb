@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph::Extensions
-  require 'ostruct'
+  require 'ostruct' if RUBY_PLATFORM != 'java'
 
   module Context
     extend ActiveSupport::Concern
