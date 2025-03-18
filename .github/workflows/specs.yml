@@ -34,6 +34,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
       - name: Set up Java
         uses: actions/setup-java@v4
         if: matrix.java-version
@@ -42,5 +43,9 @@ jobs:
           java-version: ${{ matrix.java-version }}
       - name: Wait for neo4j
         run: while [ $((curl localhost:7474/ > /dev/null 2>&1); echo $?) -ne 0 ]; do sleep 1; done
+      - name: Clean Bundler Cache
+        run: rm -rf vendor/bundle ~/.bundle ~/.gem Gemfile.lock
+      - name: Install Dependencies
+        run: bundle install
       - name: Run tests
         run: bundle exec rspec
