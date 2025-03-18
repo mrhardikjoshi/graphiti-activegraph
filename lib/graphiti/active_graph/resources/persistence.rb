@@ -1,5 +1,5 @@
 module Graphiti::ActiveGraph
-  module Resource
+  module Resources
     module Persistence
       def update(update_params, meta = nil)
         model_instance = nil

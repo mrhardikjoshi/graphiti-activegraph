@@ -2,9 +2,9 @@ RSpec.describe Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload do
   subject { LibraryResource.sideloads[:missing_books] }
 
   before(:all) do
-    class BookResource < Graphiti::Resource
+    class BookResource < Graphiti::ActiveGraph::Resource
     end
-    class LibraryResource < Graphiti::Resource
+    class LibraryResource < Graphiti::ActiveGraph::Resource
       has_one :missing_books, writable: false, class: Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload, resource: BookResource do
         self.function_proc = ->() { 'searches.missing_books($opts)' }
         self.param_proc = ->() { { opts: { genres: 'Novel' } } }

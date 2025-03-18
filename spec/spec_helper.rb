@@ -1,8 +1,14 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
 require 'pry'
+require 'active_graph'
+require 'graphiti'
 require 'graphiti-activegraph'
 require_relative 'active_graph/support/jsonapi_resource_support'
+require 'support/neo4j_db_cleaner'
+require 'support/factory_bot_setup'
+require 'support/neo4j_driver_setup'
+set_default_driver
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -34,4 +40,27 @@ RSpec.configure do |config|
   # inherited by the metadata hash of host groups and examples, rather than
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite, neo4j: true) do
+    FactoryBot.find_definitions
+  end
+
+  config.before(:suite, neo4j: true) do
+    Neo4jDbCleaner.start
+  ensure
+    Neo4jDbCleaner.clean
+  end
+
+  config.after(:suite, neo4j: true) do
+    ActiveGraph::Base.driver.close
+  end
+
+  config.append_after(:example, neo4j: true) do |example|
+    unless example.metadata[:skip_deletion]
+      Neo4jDbCleaner.clean
+      FFaker::UniqueUtils.clear # To avoid FFaker::UniqueUtils::RetryLimitExceeded
+    end
+  end
 end

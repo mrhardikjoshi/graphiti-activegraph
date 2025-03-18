@@ -1,41 +1,52 @@
 module Graphiti
   module ActiveGraph
-    module Resource
-      def relation_resource?
-        config[:relation_resource] || false
+    class Resource < Graphiti::Resource
+      include Extensions::Resources::Authorizationable
+      include Extensions::Resources::PayloadCombinable
+      include Extensions::Resources::Preloadable
+      include Extensions::Resources::Rel
+
+      self.adapter = Adapters::ActiveGraph
+      self.abstract_class = true
+
+      def self.use_uuid
+        define_singleton_method(:inherited) do |klass|
+          super(klass)
+          klass.attribute :id, :uuid
+        end
       end
 
-      def relationship_resource=(value)
-        config[:relation_resource] = value
+      def self.guard_nil_id!(params)
       end
 
-      def with_preloaded_obj(obj, params)
-        id = params[:data].try(:[], :id) || params.delete(:id)
-        params[:filter] ||= {}
-        params[:filter][:id] = id if id
-
-        build(params, nil, raise_on_missing: false, preloaded: obj)
-      end
-
-      def all_with_preloaded(obj_arr, params)
-        build(params, nil, single: false, raise_on_missing: false, preloaded: obj_arr)
-      end
-
-      def guard_nil_id!(params)
-      end
-
-      def extra_attribute?(name)
+      def self.extra_attribute?(name)
         extra_attributes.has_key?(name)
       end
-    end
 
-    module ResourceInstanceMethods
-      def relation_resource?
-        self.class.relation_resource?
+      def self.sideload_config(sideload_name)
+        config[:sideloads][sideload_name]
+      end
+
+      def self.sideload_resource_class(sideload_name)
+        sideload_config(sideload_name)&.resource_class
+      end
+
+      def self.custom_eagerload(sideload_name)
+        sideload_config(sideload_name)&.custom_eagerload
       end
 
       def extra_attribute?(name)
         self.class.extra_attribute?(name)
+      end
+
+      def build_scope(base, query, opts = {})
+        scoping_class.new(base, self, query, opts)
+      end
+
+      def handle_includes(scope, includes, sorts, **opts)
+        includes_str = JSONAPI::IncludeDirective.new(includes, retain_rel_limit: true).to_string.split(',')
+        options = opts.merge(max_page_size:).merge!(authorize_scope_params)
+        scope.with_ordered_associations(includes_str, sorts, options)
       end
 
       def sideload_name_arr(query)
@@ -67,6 +78,20 @@ module Graphiti
         rescue => e
           raise Errors::TypecastFailed.new(self, name, value, e, type_name)
         end
+      end
+
+      def authorize_scope_params
+        {}
+      end
+
+      private
+
+      def scoping_class
+        Scope
+      end
+
+      def update_foreign_key(*)
+        true
       end
     end
   end

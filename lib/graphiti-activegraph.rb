@@ -20,21 +20,23 @@ loader.ignore(File.expand_path('graphiti-activegraph.rb', __dir__))
 loader.setup
 
 Graphiti::Scoping::Filterable.prepend Graphiti::ActiveGraph::Scoping::Filterable
-Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resource::Persistence
-Graphiti::Resource::Interface::ClassMethods.prepend Graphiti::ActiveGraph::Resource::Interface::ClassMethods
+Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resources::Persistence
+Graphiti::Resource::Interface::ClassMethods.prepend Graphiti::ActiveGraph::Resources::Interface::ClassMethods
 require 'graphiti'
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
 Graphiti::Util::SerializerAttribute.prepend Graphiti::ActiveGraph::Util::SerializerAttribute
 Graphiti::Util::RelationshipPayload.prepend Graphiti::ActiveGraph::Util::RelationshipPayload
 Graphiti::Query.prepend Graphiti::ActiveGraph::Query
-Graphiti::Resource.prepend Graphiti::ActiveGraph::ResourceInstanceMethods
-Graphiti::Resource.extend Graphiti::ActiveGraph::Resource
 Graphiti::ResourceProxy.prepend Graphiti::ActiveGraph::ResourceProxy
 Graphiti::Runner.prepend Graphiti::ActiveGraph::Runner
 Graphiti::Scope.prepend Graphiti::ActiveGraph::SideloadResolve
 Graphiti::Configuration.include Graphiti::SidepostConfiguration
 Graphiti::RequestValidators::Validator.prepend Graphiti::ActiveGraph::RequestValidators::Validator
+
+unless RUBY_PLATFORM == 'java'
+  Graphiti.prepend Graphiti::ActiveGraph::Extensions::Context
+end
 
 # JSONAPI extensions
 JSONAPI::Serializable::Resource.prepend Graphiti::ActiveGraph::JsonapiExt::Serializable::ResourceExt
