@@ -43,6 +43,12 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
 
+      - name: Install factory_bot_rails
+        run: gem install factory_bot_rails
+
+      - name: Install ffaker
+        run: gem install ffaker
+
       - name: Install dependencies
         run: bundle update
 
