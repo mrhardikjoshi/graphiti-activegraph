@@ -41,6 +41,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: Wait for neo4j
         run: while [ $((curl localhost:7474/ > /dev/null 2>&1); echo $?) -ne 0 ]; do sleep 1; done
       - name: Run tests
