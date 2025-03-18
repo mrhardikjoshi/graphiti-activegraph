@@ -18,9 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ jruby, ruby ]
+        ruby-version: [ jruby-9.4.5.0, ruby-3.1.4 ]
         neo4j: [ 5.23.0 ]
-        active_model: [ 7.1.4, 7.2.1 ]
         include:
           - ruby: jruby
             java-version: 17
@@ -34,21 +33,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: false
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        if: matrix.java-version
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java-version }}
-      - name: Install ruby-maven
-        run: gem install ruby-maven ruby-maven-libs
-      - name: Install Maven
-        run: sudo apt-get update && sudo apt-get install -y maven
-      - name: Install ruby-maven
-        run: gem install ruby-maven --no-document
       - name: Install dependencies
-        run: bundle install --jobs 4 --retry 3 --path vendor/bundle
+        run: bundle update
       - name: Wait for neo4j
         run: while [ $((curl localhost:7474/ > /dev/null 2>&1); echo $?) -ne 0 ]; do sleep 1; done
       - name: Run tests
