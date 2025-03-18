@@ -1,80 +1,27 @@
-## Unreleased
+# Changelog
 
--
+All notable changes to this project will be documented in this file.
 
-## 0.1.8 (09-06-2021)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Features:
+## [Unreleased]
 
-- Added support for polymorphic relationship.
+## [1.0.0] - 2025-03-18
 
-## 0.1.13 (21-12-2021)
+### Added
 
-Features:
+- **MRI Support**: Introduced compatibility with MRI (Matz's Ruby Interpreter), expanding the gem's usability beyond JRuby (#38).
+- **Documentation Updates**: Expanded the README to provide clearer guidance on gem usage and integration (#38).
+- **Sideloading Workflow**: Enhanced scoping mechanisms and added support for eager loading associations to improve data retrieval efficiency and flexibility (#38).
 
-- Supports Jruby-9.3.2.0
+### Changed
+- **Resource Class**: Instead of modifying the `Graphiti::Resource` class, we now define `Graphiti::ActiveGraph::Resource`,  
+  which must be inherited in all resource classes to enable ActiveGraph support (#38).
 
-## 0.1.14 (21-12-2021)
+---
 
-Features:
+*Note: For details on changes prior to version 1.0.0, please refer to the [`CHANGELOG_PRE_1.0.0.md`](CHANGELOG_PRE_1.0.0.md) file.*
 
-- Adding unpaginated query to resource proxy with preloaded records. This will help in getting count on API.
-
-## 0.1.15 (21-06-2022)
-
-Features:
-
-- Relationships mentioned in sparse field param (and not in include), will now be returned in relationship block of response
-
-## 0.1.20
-
-Features:
-
-- With graphiti config variable "allow_sidepost" you can allow/disallow sideposting, by default it is allowed.
-
-## 0.1.21
-
-Fixes:
-
-- Runner#proxy keyword arguments
-
-## 0.1.22
-
-Fixes:
-
-- when rendering preloaded resources, we were not applying scoping. Now we are skipping around_scoping callback too.
-
-## 0.1.23 (29-04-2024)
-
-Features:
-
-- Added support for UUID
-
-## 0.1.24 (18-06-2024)
-
-Features:
-
-- Added preliminary support for Sideload backed by function instead of model association
-
-## 0.1.25 (04-12-2024)
-
-Features:
-
-- Added support to preload extra_fields for the main resource, replacing N+1 queries with a single query. This does not apply to sideloaded resources.
-
-## 0.2.0 (01-24-2025)
-
-Features:
-
-- Added MRI support
-- Added support for rails 8
-
-Breaking changes:
-
-- Removed support for graphiti <= 1.6.3
-
-<!-- ### [version (DD-MM-YYYY)] -->
-<!-- Breaking changes:-->
-<!-- Features:-->
-<!-- Fixes:-->
-<!-- Misc:-->
+[unreleased]: https://github.com/mrhardikjoshi/graphiti-activegraph/compare/v1.0.0...master
+[1.0.0]: https://github.com/mrhardikjoshi/graphiti-activegraph/compare/9f837108ae57287c65b0f6fd2609dd56a95cd461...v1.0.0
