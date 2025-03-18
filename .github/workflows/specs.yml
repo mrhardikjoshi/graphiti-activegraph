@@ -47,8 +47,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y maven
       - name: Install ruby-maven
         run: gem install ruby-maven --no-document
-      - name: Force Maven to Download Dependencies
-        run: mvn dependency:resolve
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: Wait for neo4j
