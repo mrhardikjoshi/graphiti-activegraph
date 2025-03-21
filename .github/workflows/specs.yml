@@ -18,9 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ jruby, ruby ]
+        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7 ] # Removed 'jruby' till https://github.com/jruby/jruby/issues/8642 is fixed
         neo4j: [ 5.23.0 ]
-        active_model: [ 7.1.4, 7.2.1 ]
         include:
           - ruby: jruby
             java-version: 17
@@ -29,19 +28,24 @@ jobs:
     steps:
       - name: Start neo4j
         run: docker run --name neo4j --env NEO4J_AUTH=neo4j/password --env NEO4J_ACCEPT_LICENSE_AGREEMENT=yes --env NEO4J_dbms_directories_import= -p7687:7687 -p7474:7474 -v `pwd`/tmp:/var/lib/neo4j/import --rm neo4j:${{ matrix.neo4j }}-enterprise &
+
       - uses: actions/checkout@v3
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+
       - name: Set up Java
         uses: actions/setup-java@v4
         if: matrix.java-version
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
+
       - name: Wait for neo4j
         run: while [ $((curl localhost:7474/ > /dev/null 2>&1); echo $?) -ne 0 ]; do sleep 1; done
+
       - name: Run tests
         run: bundle exec rspec
