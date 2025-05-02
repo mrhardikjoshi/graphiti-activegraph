@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-05-2
+
 ### Added
 
 - **Deep sideloading**: introduced Include scoping class to support deep sideloading using single query (e.g. include='author.posts')
 - **Deep sorting**: added SortNormalizer to support sorting by deep sideloaded resource's attribute (e.g. sort='author.posts.title')
+- **Links control**: Control the links(pagination and resource) in response via request query params (pagination_links=true|false, links=true|false)
 
 ## [1.0.0] - 2025-03-18
 

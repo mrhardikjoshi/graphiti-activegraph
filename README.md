@@ -20,7 +20,6 @@ Or install it yourself as:
 gem install graphiti-activegraph
 ```
 
-
 ## Usage
 While defining a Resource class, inherit it from `Graphiti::ActiveGraph::Resource`
 ```ruby
@@ -61,11 +60,15 @@ sort=author.country.name&include=author.country
 Here, `Author` and `Country` are associated resources, and `name` is an attribute on `Country`. The posts will be sorted by the country's name. You can chain any number of associations in this way to achieve deep sorting.
 Note: The `include` parameter must be present and include the full association path (`author.country`) for the sorting to work correctly.
 
+#### Response Payload Links control
+Control the links in response payload via request query params:
+- `pagination_links=true|false` — toggle top-level pagination links
+- `links=true|false` — toggle links inside each resource object
 
-### Contributing
+## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/mrhardikjoshi/graphiti-activegraph. This project is intended to be a safe, welcoming space for collaboration.
 
-### Release
+## Release
 1. Make sure version file is updated/incremented in master branch
 2. git checkout master
 3. git pull origin master
@@ -74,5 +77,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/mrhard
 6. gem build graphiti-activegraph.gemspec
 7. gem push graphiti-activegraph-1.2.3.gem
 
-### License
+## License
 The gem is available as open-source under the terms of the MIT License.
