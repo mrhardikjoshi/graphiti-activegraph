@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Graphiti
   module SidepostConfiguration
     extend ActiveSupport::Concern

@@ -4,7 +4,7 @@
 
 An adapter to make Graphiti work with the ActiveGraph(former Neo4jrb) OGM. This gem allows you to easily build [jsonapi.org](https://jsonapi.org) compatible APIs for GraphDB using [Graphiti](https://www.graphiti.dev) and [ActiveGraph](https://github.com/neo4jrb/activegraph). 
 
-### Installation
+## Installation
 Add this line to your application's `Gemfile`:
 ```ruby
 gem 'graphiti-activegraph'
@@ -34,23 +34,33 @@ class RelationshipBackedResource < Graphiti::ActiveGraph::Resource
 end
 ```
 
-### Documentation
-##### **Key Differences from Graphiti**
-- **Efficient Sideloading:**
+## Documentation
+### Key Differences from Graphiti
+#### Efficient Sideloading:
 Unlike Graphiti, which executes multiple queries for sideloading, graphiti-activegraph leverages `with_ordered_associations` from ActiveGraph to fetch sideloaded data in a single query, improving performance.
 
-- **Sideposting Behavior:**
+#### Sideposting Behavior:
 graphiti-activegraph allows assigning and unassigning relationships via sideposting but does not support modifying a resource’s attributes through sideposting.
 
-- **Thread Context Handling:**
+#### Thread Context Handling:
 Graphiti stores context using `Thread.current[]`, which does not persist across different fibers within the same thread. In graphiti-activegraph, when running on MRI (non-JRuby environments), the gem uses `thread_variable_get` and `thread_variable_set`. Ensuring the context remains consistent across different fibers in the same thread.
 
-##### **New Features in graphiti-activegraph**
-###### Rendering Preloaded Objects Without Extra Queries
+### New Features in graphiti-activegraph
+#### Rendering Preloaded Objects Without Extra Queries
 graphiti-activegraph introduces two new methods on the Graphiti resource class:
 `with_preloaded_obj(record, params)` – Renders a single preloaded ActiveGraph object without querying the database.
 `all_with_preloaded(records, params)` – Renders multiple preloaded ActiveGraph objects without additional queries.
 **Note:** These methods assume that the provided records are final and will not apply Graphiti’s filtering, sorting, or scoping logic.
+
+#### Efficient Deep Sorting
+Graphiti does not natively support deep sorting (i.e., sorting based on attributes of associated resources), `graphiti-activegraph` adds this feature by allowing you to chain associations using dot (.) notation.
+For example, to sort Post records based on their Author's Country's name, you can use following query string:
+```
+sort=author.country.name&include=author.country
+```
+Here, `Author` and `Country` are associated resources, and `name` is an attribute on `Country`. The posts will be sorted by the country's name. You can chain any number of associations in this way to achieve deep sorting.
+Note: The `include` parameter must be present and include the full association path (`author.country`) for the sorting to work correctly.
+
 
 ### Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/mrhardikjoshi/graphiti-activegraph. This project is intended to be a safe, welcoming space for collaboration.
