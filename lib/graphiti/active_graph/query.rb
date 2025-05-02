@@ -44,7 +44,30 @@ module Graphiti::ActiveGraph
       hash.map { |key, value| [key.to_s.split('.').map(&:to_sym), value] }.to_h
     end
 
+    def links?
+      [:json, :xml, 'json', 'xml'].exclude?(params[:format]) && show_resource_links?
+    end
+
+    def pagination_links?
+      action != :find && show_pagination_links?
+    end
+
     private
+
+    def show_pagination_links?
+      return @show_pagination_links unless @show_pagination_links.nil?
+      @show_pagination_links = read_link_params(:pagination_links)
+    end
+
+    def show_resource_links?
+      return @show_resource_links unless @show_resource_links.nil?
+
+      @show_resource_links = read_link_params(:links)
+    end
+
+    def read_link_params(name)
+      ActiveModel::Type::Boolean.new.cast(params[name]) != false
+    end
 
     def sort_criteria(sort)
       sort.split(',').map(&method(:sort_hash)).map(&method(:parse_sort_criteria_hash))
