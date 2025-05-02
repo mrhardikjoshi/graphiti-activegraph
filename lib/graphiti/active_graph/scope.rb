@@ -14,6 +14,7 @@ module Graphiti
       end
 
       def append_scopings(opts)
+        add_scoping(:include, Scoping::Include, opts)
         add_scoping(:association_eagerload, Scoping::AssociationEagerLoad, opts)
       end
 

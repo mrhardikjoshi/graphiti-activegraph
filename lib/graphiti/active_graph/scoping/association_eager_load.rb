@@ -1,6 +1,5 @@
 module Graphiti::ActiveGraph
   module Scoping
-    # Handles sideloading via scoping instead of sideloading query as in original jsonapi_suite
     class AssociationEagerLoad < Graphiti::Scoping::Base
       def custom_scope
         nil

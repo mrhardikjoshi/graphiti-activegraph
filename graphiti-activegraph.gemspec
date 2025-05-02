@@ -19,6 +19,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'graphiti', '>= 1.6.4'
   spec.add_dependency 'activegraph', '>= 12.0.0.beta.5'
+  spec.add_dependency 'parslet', '>= 2.0.0'
+  spec.add_dependency 'activegraph-extensions', '>= 0.1.0'
 
   spec.add_development_dependency 'graphiti_spec_helpers', '>= 1.0.0'
   spec.add_development_dependency 'standard'

@@ -36,6 +36,10 @@ module Graphiti::ActiveGraph
       []
     end
 
+    def include_directive
+      @include_directive ||= Graphiti::ActiveGraph::JsonapiExt::IncludeDirective.new(@include_param, retain_rel_limit: true)
+    end
+
     def parse_sort_criteria_hash(hash)
       hash.map { |key, value| [key.to_s.split('.').map(&:to_sym), value] }.to_h
     end

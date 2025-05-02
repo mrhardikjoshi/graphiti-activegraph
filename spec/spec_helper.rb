@@ -8,6 +8,8 @@ require_relative 'active_graph/support/jsonapi_resource_support'
 require 'support/neo4j_db_cleaner'
 require 'support/factory_bot_setup'
 require 'support/neo4j_driver_setup'
+require 'parslet'
+
 set_default_driver
 
 RSpec.configure do |config|
