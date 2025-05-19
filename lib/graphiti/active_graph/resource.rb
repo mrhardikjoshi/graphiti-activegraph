@@ -84,6 +84,10 @@ module Graphiti
         {}
       end
 
+      def all_models
+        polymorphic? ? self.class.children.map(&:model) : [model]
+      end
+
       private
 
       def scoping_class
