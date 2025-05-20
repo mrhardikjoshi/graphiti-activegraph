@@ -24,6 +24,7 @@ Graphiti::Resource::Persistence.prepend Graphiti::ActiveGraph::Resources::Persis
 Graphiti::Resource::Interface::ClassMethods.prepend Graphiti::ActiveGraph::Resources::Interface::ClassMethods
 require 'graphiti'
 Graphiti::Scoping::Filter.prepend Graphiti::ActiveGraph::Scoping::Filter
+Graphiti::Serializer.prepend Graphiti::ActiveGraph::Serializer
 Graphiti::Util::SerializerRelationship.prepend Graphiti::ActiveGraph::Util::SerializerRelationship
 Graphiti::Util::SerializerAttribute.prepend Graphiti::ActiveGraph::Util::SerializerAttribute
 Graphiti::Util::RelationshipPayload.prepend Graphiti::ActiveGraph::Util::RelationshipPayload

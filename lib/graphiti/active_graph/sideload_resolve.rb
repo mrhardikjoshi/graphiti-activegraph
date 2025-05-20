@@ -19,10 +19,28 @@ module Graphiti::ActiveGraph
     end
 
     def resolve
-      super.tap { |results| preload_extra_fields(results) }
+      resolve_with_callbacks.tap { |results| preload_extra_fields(results) }
     end
 
     private
+
+    def resolve_with_callbacks
+      if @query.zero_results?
+        []
+      else
+        resolved = broadcast_data { |payload|
+          @object = @resource.before_resolve(@object, @query)
+          payload[:results] = @resource.resolve(@object)
+          payload[:results]
+        }
+        resolved.compact!
+        assign_serializer(resolved)
+        yield resolved if block_given?
+        @opts[:after_resolve]&.call(resolved)
+        resolve_sideloads(resolved) unless @query.sideloads.empty?
+        resolved
+      end
+    end
 
     def preload_extra_fields(results)
       requested_extra_fields.each do |extra_field_name|

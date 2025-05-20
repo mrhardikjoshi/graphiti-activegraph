@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-05-20
+
+### Added
+
+- **Graphiti Compatibility**: Added support for Graphiti versions up to 1.8.x, fixing previously broken sideloading behavior.
+
+### Fixed
+
+- **Serializer**: Resolved an issue where polymorphic resources were not functioning correctly in serializers.
+
 ## [1.1.0] - 2025-05-2
 
 ### Added
