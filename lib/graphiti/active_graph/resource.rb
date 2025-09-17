@@ -19,6 +19,14 @@ module Graphiti
       def self.guard_nil_id!(params)
       end
 
+      def self.on_extra_attribute(name, preload: nil, &blk)
+        if config[:extra_attributes][name]
+          config[:extra_attributes][name] = { hook: blk, preload: }
+        else
+          raise Errors::ExtraAttributeNotFound.new(self, name)
+        end
+      end
+
       def self.extra_attribute?(name)
         extra_attributes.has_key?(name)
       end
@@ -45,8 +53,9 @@ module Graphiti
 
       def handle_includes(scope, includes, sorts, **opts)
         includes_str = JSONAPI::IncludeDirective.new(includes, retain_rel_limit: true).to_string.split(',')
+        extra_includes_str = opts.delete(:extra_fields_includes) || []
         options = opts.merge(max_page_size:).merge!(authorize_scope_params)
-        scope.with_ordered_associations(includes_str, sorts, options)
+        scope.with_ordered_associations(includes_str.union(extra_includes_str), sorts, options)
       end
 
       def sideload_name_arr(query)
