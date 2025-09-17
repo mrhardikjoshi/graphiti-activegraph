@@ -63,5 +63,29 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
 
       it { is_expected.to eq(['posts.author']) }
     end
+
+    context 'when preload value is a hash' do
+      before do
+        AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = { posts: :author }
+      end
+
+      it { is_expected.to eq(['posts.author.posts.author']) }
+    end
+
+    context 'when preload value is a nested hash' do
+      before do
+        AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = { posts: { comment: :author } }
+      end
+
+      it { is_expected.to eq(['posts.author.posts.comment.author']) }
+    end
+
+    context 'when preload value is an array' do
+      before do
+        AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = [:posts, 'comment']
+      end
+
+      it { is_expected.to eq(['posts.author.posts', 'posts.author.comment']) }
+    end
   end
 end

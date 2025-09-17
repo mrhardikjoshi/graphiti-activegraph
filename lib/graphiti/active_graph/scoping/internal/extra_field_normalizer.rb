@@ -48,10 +48,24 @@ module Graphiti::ActiveGraph
         end
 
         def add_preload_paths_for_extra_field(config, parent_path, assoc)
-          return unless config && config[:preload]
+          return unless config && config[:preload].present?
             
-          Array(config[:preload]).each do |preload|
+          flatten_preload_hash(config[:preload]).each do |preload|
             @extra_includes << construct_preload_path(parent_path, assoc, preload)
+          end
+        end
+
+        def flatten_preload_hash(preload, prefix = [])
+          case preload
+          when Hash
+            preload.flat_map { |k, v| flatten_preload_hash(v, prefix + [k.to_s]) }
+          when Array
+            preload.flat_map { |v| flatten_preload_hash(v, prefix) }
+          else
+            value = preload.to_s
+            return [] if value.empty?
+
+            [(prefix + [value]).join('.')]
           end
         end
 
