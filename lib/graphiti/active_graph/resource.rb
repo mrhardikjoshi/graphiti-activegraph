@@ -19,14 +19,6 @@ module Graphiti
       def self.guard_nil_id!(params)
       end
 
-      def self.on_extra_attribute(name, preload: nil, &blk)
-        if config[:extra_attributes][name]
-          config[:extra_attributes][name] = { hook: blk, preload: }
-        else
-          raise Errors::ExtraAttributeNotFound.new(self, name)
-        end
-      end
-
       def self.extra_attribute?(name)
         extra_attributes.has_key?(name)
       end

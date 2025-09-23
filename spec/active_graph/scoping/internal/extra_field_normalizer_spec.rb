@@ -6,7 +6,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
     subject { described_class.new(extra_attributes).normalize(resource, includes) }
 
     context 'when preload value present' do
-      it { is_expected.to eq(['posts.author.posts']) }
+      it { is_expected.to eq(['posts', 'posts.author.posts']) }
     end
 
     context 'when preload value absent' do
@@ -36,7 +36,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
         AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = 'posts*'
       end
 
-      it { is_expected.to eq(['posts.author.posts*']) }
+      it { is_expected.to eq(['posts*', 'posts.author.posts*']) }
     end
 
     context 'when multiple extra_attributes' do
@@ -45,7 +45,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
       end
       let(:extra_attributes) { { authors: [:recent_three_post_titles], posts: [:full_post_title] } }
 
-      it { is_expected.to eq(['posts.author', 'posts.author.posts']) }
+      it { is_expected.to eq(['posts', 'posts.author', 'posts.author.posts']) }
     end
 
     context 'when no extra_attributes' do
@@ -61,7 +61,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
       let(:includes) { {posts: {comments: {}}}}
       let(:extra_attributes) { { authors: [:recent_three_post_titles], posts: [:full_post_title] } }
 
-      it { is_expected.to eq(['posts.author']) }
+      it { is_expected.to eq(['posts', 'posts.author']) }
     end
 
     context 'when preload value is a hash' do
@@ -69,7 +69,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
         AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = { posts: :author }
       end
 
-      it { is_expected.to eq(['posts.author.posts.author']) }
+      it { is_expected.to eq(['posts.author', 'posts.author.posts.author']) }
     end
 
     context 'when preload value is a nested hash' do
@@ -77,7 +77,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
         AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = { posts: { comment: :author } }
       end
 
-      it { is_expected.to eq(['posts.author.posts.comment.author']) }
+      it { is_expected.to eq(['posts.comment.author', 'posts.author.posts.comment.author']) }
     end
 
     context 'when preload value is an array' do
@@ -85,7 +85,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
         AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = [:posts, 'comment']
       end
 
-      it { is_expected.to eq(['posts.author.posts', 'posts.author.comment']) }
+      it { is_expected.to eq(['posts', 'comment', 'posts.author.posts', 'posts.author.comment']) }
     end
   end
 end

@@ -11,6 +11,7 @@ module Graphiti::ActiveGraph
         def normalize(resource, normalized_includes)
           return [] if @extra_fields.blank?
 
+          process_extra_fields_for_assoc(resource, [], '')
           collect_extra_field_paths(resource, normalized_includes)
           @extra_includes.uniq
         end
@@ -28,11 +29,8 @@ module Graphiti::ActiveGraph
         end
 
         def fetch_assoc_resource(resource, assoc)
-          resource.class&.sideload_resource_class(normalized_assoc_name(assoc))&.new
-        end
-
-        def normalized_assoc_name(assoc)
-          assoc.to_s.split('*').first.to_sym
+          rel_name = Util::Transformers::RelationParam.new(assoc).rel_name_sym
+          resource.class&.sideload_resource_class(rel_name)&.new
         end
 
         def process_extra_fields_for_assoc(assoc_resource, parent_path, assoc)
@@ -70,7 +68,7 @@ module Graphiti::ActiveGraph
         end
 
         def construct_preload_path(parent_path, assoc, preload)
-          (parent_path + [assoc.to_s, preload.to_s]).join('.')
+          (parent_path + [assoc.to_s, preload.to_s]).compact_blank.join('.')
         end
       end
     end
