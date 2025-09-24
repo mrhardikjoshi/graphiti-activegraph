@@ -10,7 +10,7 @@ module Graphiti::ActiveGraph
       end
 
       def apply_standard_scope
-        return scope if normalized_includes.empty?
+        return scope if normalized_includes.empty? && extra_fields_includes.empty?
 
         self.scope = resource.handle_includes(scope, normalized_includes, normalized_sorts,
                                               extra_fields_includes:, with_vars: with_vars_for_sort, paginate: paginate?)
@@ -25,11 +25,7 @@ module Graphiti::ActiveGraph
       end
 
       def extra_fields_includes
-        normalized_extra_fields if @query_hash[:extra_fields]
-      end
-
-      def normalized_extra_fields
-        Internal::ExtraFieldNormalizer.new(@query_hash[:extra_fields]).normalize(resource, normalized_includes)
+        @extra_fields_includes ||= Internal::ExtraFieldNormalizer.new(@query_hash[:extra_fields]).normalize(resource, normalized_includes)
       end
 
       def paginate?
