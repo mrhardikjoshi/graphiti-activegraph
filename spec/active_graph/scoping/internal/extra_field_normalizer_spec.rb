@@ -17,7 +17,7 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
       it { is_expected.to eq([]) }
     end
 
-    context 'when on_extra_attribute hook absent' do
+    context 'when extra_attribute preload parameter absent' do
       before do
         AuthorResource.config[:extra_attributes][:recent_three_post_titles] = {}
       end
