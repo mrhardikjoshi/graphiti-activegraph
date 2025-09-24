@@ -22,6 +22,9 @@ class PostResource < Graphiti::ActiveGraph::Resource
   attribute :id, :uuid
   attribute :title, :string
   attribute :body, :string
+  extra_attribute :full_post_title, :string, preload: :author do
+    "#{author.name} - #{title}"
+  end
 
   has_one :author, link: false
 end
@@ -29,6 +32,9 @@ end
 class AuthorResource < Graphiti::ActiveGraph::Resource
   attribute :id, :uuid
   attribute :name, :string
+  extra_attribute :recent_three_post_titles, :array, preload: :posts do
+    posts.last(3).map(&:title)
+  end
 
   has_many :posts, link: false
 end
