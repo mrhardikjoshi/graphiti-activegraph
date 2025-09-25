@@ -13,7 +13,7 @@ module Graphiti::ActiveGraph
         return scope if normalized_includes.empty?
 
         self.scope = resource.handle_includes(scope, normalized_includes, normalized_sorts,
-                                              extra_fields_includes:, with_vars: with_vars_for_sort, paginate: paginate?)
+          extra_fields_includes:, with_vars: with_vars_for_sort, paginate: paginate?)
       end
 
       private

@@ -1,15 +1,18 @@
 describe Graphiti::ActiveGraph::Serializer do
-  describe 'Graphiti::Serializer' do
+  describe "Graphiti::Serializer" do
     subject { Graphiti::Serializer }
 
     it { is_expected.to include(Graphiti::ActiveGraph::Serializer) }
   end
 
-  describe '#jsonapi_resource_class' do
+  describe "#jsonapi_resource_class" do
     let(:serializer_class) do
       Class.new do
-        def polymorphic?; end
-        def jsonapi_type; end
+        def polymorphic?
+        end
+
+        def jsonapi_type
+        end
       end
     end
     let(:polymorphic) { false }
@@ -24,14 +27,14 @@ describe Graphiti::ActiveGraph::Serializer do
       serializer.instance_variable_set(:@resource, resource_obj)
     end
 
-    it 'returns resource class' do
+    it "returns resource class" do
       expect(serializer.jsonapi_resource_class).to eq(AuthorResource)
     end
 
-    context 'with polymorphic resource' do
+    context "with polymorphic resource" do
       let(:polymorphic) { true }
 
-      it 'returns correct resource class' do
+      it "returns correct resource class" do
         expect(serializer.jsonapi_resource_class).to eq(AuthorResource)
       end
     end

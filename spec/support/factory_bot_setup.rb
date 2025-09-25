@@ -1,8 +1,9 @@
-require 'factory_bot'
-require 'ffaker'
+require "factory_bot"
+require "ffaker"
 
 class Post
   include ActiveGraph::Node
+
   id_property :neo_id
   property :title, type: String
   property :body, type: String
@@ -12,6 +13,7 @@ end
 
 class Author
   include ActiveGraph::Node
+
   id_property :neo_id
   property :name, type: String
 

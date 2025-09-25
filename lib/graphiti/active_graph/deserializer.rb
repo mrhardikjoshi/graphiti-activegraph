@@ -26,17 +26,17 @@ module Graphiti::ActiveGraph
 
       return unless data.blank? && env && parsable_content?
 
-      raise ArgumentError, "JSON API payload must contain the 'data' key" 
+      raise ArgumentError, "JSON API payload must contain the 'data' key"
     end
 
     def process_relationship_datum(datum)
       {
         meta: {
           jsonapi_type: datum[:type],
-          temp_id: datum[:'temp-id'],
+          temp_id: datum[:"temp-id"],
           method: datum[:method]&.to_sym
         },
-        attributes: datum[:id] ? { id: datum[:id] } : {},
+        attributes: datum[:id] ? {id: datum[:id]} : {},
         relationships: {}
       }
     end
@@ -78,11 +78,11 @@ module Graphiti::ActiveGraph
       results = super
       return results if action.present? || @env.nil?
 
-      action = case @env['REQUEST_METHOD']
-               when 'POST' then :create
-               when 'PUT', 'PATCH' then :update
-               when 'DELETE' then :destroy
-               end
+      action = case @env["REQUEST_METHOD"]
+      when "POST" then :create
+      when "PUT", "PATCH" then :update
+      when "DELETE" then :destroy
+      end
 
       results[:method] = action
       results
@@ -90,7 +90,7 @@ module Graphiti::ActiveGraph
 
     def path_map
       map = @params.select { |key, _| key =~ /_id$/ }.permit!.to_h
-      map = filter_keys(map) { |key| key.gsub(/_id$/, '').to_sym }
+      map = filter_keys(map) { |key| key.gsub(/_id$/, "").to_sym }
       map = filter_keys(map) { |key| @parent_map[key] || key }
       map = filter_keys_presence(map) if @model < ActiveGraph::Node
       map

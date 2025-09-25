@@ -12,6 +12,8 @@ module Graphiti::ActiveGraph
           self.attribute = :id
           self.rel = rel
           @has_next = true
+          @associations_cache = {}
+          @path_relationships_cache = nil
         end
 
         def next?
@@ -19,7 +21,7 @@ module Graphiti::ActiveGraph
         end
 
         def increment(key)
-          raise Exception, 'no continuation on path possible' unless next?
+          raise StandardError, "no continuation on path possible" unless next?
           if rel
             increment_from_cache(key)
           else
@@ -32,20 +34,30 @@ module Graphiti::ActiveGraph
         end
 
         def self.parse(scope, path, rel = nil)
+          return nil if path.empty?
+
           path_desc = new(scope, rel)
-          path_desc.increment(path.shift) while path_desc.next? && path.present?
-          path_desc if path.empty?
+
+          while path_desc.next? && path.present?
+            path_desc.increment(path.shift)
+          end
+
+          path.empty? ? path_desc : nil
         end
 
         def self.association_for_relationship(associations, key)
           key_class_name = key[:rel_name].classify
-          key_assoc_name = key[:rel_name].gsub('_rel', '')
-          assocs = associations.find_all { |_, value| value.relationship_class_name == key_class_name || value.name.to_s == key_assoc_name }
-          assocs.size == 1 ? assocs.first : nil
+          key_assoc_name = key[:rel_name].gsub("_rel", "").freeze
+
+          assocs = associations.select { |_, value|
+            value.relationship_class_name == key_class_name || value.name.to_s == key_assoc_name
+          }
+
+          (assocs.size == 1) ? assocs.first : nil
         end
 
         def path_relationships
-          path.map { |elm| elm[:rel_name].to_sym }
+          @path_relationships_cache ||= path.map { |elm| elm[:rel_name].to_sym }.freeze
         end
 
         private
@@ -54,7 +66,9 @@ module Graphiti::ActiveGraph
 
         def increment_from_cache(key)
           rel_name = key[:rel_name]
-          if rel.target_class_names.map(&:demodulize).map(&:downcase).include?(rel_name)
+          target_class_names = rel.target_class_names.map(&:demodulize).map(&:downcase)
+
+          if target_class_names.include?(rel_name)
             self.rel = nil
           else
             final_attribute(rel_name)
@@ -62,8 +76,10 @@ module Graphiti::ActiveGraph
         end
 
         def increment_from_scope(key)
-          associations = scope.associations
-          if associations.key?(key[:rel_name].to_sym)
+          rel_name_sym = key[:rel_name].to_sym
+          associations = cached_associations
+
+          if associations.key?(rel_name_sym)
             advance(key)
           else
             increment_from_rel(self.class.association_for_relationship(associations, key), key)
@@ -82,11 +98,20 @@ module Graphiti::ActiveGraph
         def advance(key)
           path << key
           self.scope = scope.send(key[:rel_name], rel_length: key[:rel_length])
+          clear_path_cache
         end
 
         def final_attribute(key)
           self.attribute = key
           @has_next = false
+        end
+
+        def cached_associations
+          @associations_cache[scope.object_id] ||= scope.associations
+        end
+
+        def clear_path_cache
+          @path_relationships_cache = nil
         end
       end
     end

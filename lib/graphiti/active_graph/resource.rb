@@ -44,14 +44,22 @@ module Graphiti
       end
 
       def handle_includes(scope, includes, sorts, **opts)
-        includes_str = JSONAPI::IncludeDirective.new(includes, retain_rel_limit: true).to_string.split(',')
+        @include_directive_cache ||= {}
+
+        directive = @include_directive_cache[includes] ||=
+          JSONAPI::IncludeDirective.new(includes, retain_rel_limit: true)
+
+        includes_str = directive.to_string.split(",")
         extra_includes_str = opts.delete(:extra_fields_includes) || []
         options = opts.merge(max_page_size:).merge!(authorize_scope_params)
         scope.with_ordered_associations(includes_str.union(extra_includes_str), sorts, options)
       end
 
       def sideload_name_arr(query)
-        query.sideloads.keys.map(&:to_sym)
+        @sideload_name_cache ||= {}
+        sideload_keys = query.sideloads.keys
+
+        @sideload_name_cache[sideload_keys] ||= sideload_keys.map(&:to_sym).freeze
       end
 
       def resolve(scope)
@@ -59,34 +67,43 @@ module Graphiti
       end
 
       def typecast(name, value, flag)
-        att = get_attr!(name, flag, request: true)
-
-        # in case of attribute is not declared on resource
-        # do not throw error, return original value without typecast
+        # Early return for nil value optimization
+        return value unless value || (att = get_attr!(name, flag, request: true))
         return value unless att
 
-        type_name = att[:type]
-        if flag == :filterable
-          type_name = filters[name][:type]
+        type_name = if flag == :filterable
+          filters[name][:type]
+        else
+          att[:type]
         end
+
         type = Graphiti::Types[type_name]
         return if value.nil? && type[:kind] != "array"
+
         begin
-          flag = :read if flag == :readable
-          flag = :write if flag == :writable
-          flag = :params if [:sortable, :filterable].include?(flag)
-          type[flag][value]
+          normalized_flag = case flag
+          when :readable then :read
+          when :writable then :write
+          when :sortable, :filterable then :params
+          else flag
+          end
+
+          type[normalized_flag][value]
         rescue => e
           raise Errors::TypecastFailed.new(self, name, value, e, type_name)
         end
       end
 
       def authorize_scope_params
-        {}
+        @authorize_scope_params ||= {}.freeze
       end
 
       def all_models
-        polymorphic? ? self.class.children.map(&:model) : [model]
+        @all_models ||= if polymorphic?
+          self.class.children.map(&:model).freeze
+        else
+          [model].freeze
+        end
       end
 
       private

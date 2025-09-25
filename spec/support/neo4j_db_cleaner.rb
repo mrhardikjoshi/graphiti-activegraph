@@ -4,7 +4,7 @@ class Neo4jDbCleaner
     end
 
     def clean
-      ActiveGraph::Base.query('MATCH (n) DETACH DELETE n')
+      ActiveGraph::Base.query("MATCH (n) DETACH DELETE n")
     end
 
     def cleaning(&block)

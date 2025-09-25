@@ -12,21 +12,21 @@ RSpec.describe Graphiti::ActiveGraph::Util::SerializerRelationship do
   let(:resource_one) { double(:resource) }
   let(:resource_two) { double(:resource) }
 
-  context 'with assign_each_proc' do
+  context "with assign_each_proc" do
     let(:assign_each_proc) { ->(parent) { parent.children.first } }
 
-    describe '#data_proc' do
-      it 'returns data from assign_each_proc' do
+    describe "#data_proc" do
+      it "returns data from assign_each_proc" do
         expect(subject.data_proc.call(nil)).to eq(resource_one)
       end
     end
   end
 
-  context 'without assign_each_proc is present' do
+  context "without assign_each_proc is present" do
     let(:assign_each_proc) { nil }
 
-    describe '#data_proc' do
-      it 'returns data from association call' do
+    describe "#data_proc" do
+      it "returns data from association call" do
         expect(subject.data_proc.call(nil)).to eq(parent_resource.children)
       end
     end

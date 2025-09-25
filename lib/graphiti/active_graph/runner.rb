@@ -24,11 +24,10 @@ module Graphiti::ActiveGraph
         :preloaded).merge(unpaginated_query: params[:unpaginated_query])
       scope = jsonapi_scope(base, scope_opts)
       preloaded = opts[:preloaded]
-      options = { payload: deserialized_payload,
-        single: opts[:single],
-        raise_on_missing: opts[:raise_on_missing],
-        preloaded: preloaded
-      }
+      options = {payload: deserialized_payload,
+                 single: opts[:single],
+                 raise_on_missing: opts[:raise_on_missing],
+                 preloaded: preloaded}
       ::Graphiti::ResourceProxy.new jsonapi_resource,
         scope,
         query,
@@ -36,4 +35,3 @@ module Graphiti::ActiveGraph
     end
   end
 end
-

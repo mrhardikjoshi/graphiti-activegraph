@@ -6,6 +6,7 @@ module Graphiti::ActiveGraph
 
         def initialize(scope)
           @scope = scope
+          @path_cache = {}
         end
 
         def normalize(includes_hash, sorts, deep_sorts)
@@ -15,38 +16,61 @@ module Graphiti::ActiveGraph
         end
 
         def normalize_base_sort(sorts)
-          sorts.present? ? { '' => sorts.map { |sort| "#{sort.keys.first} #{sort.values.first}" } } : {}
+          return {} if sorts.blank?
+
+          sort_specs = sorts.map do |sort|
+            "#{sort.keys.first} #{sort.values.first}"
+          end
+
+          {"" => sort_specs}
         end
 
         def normalize_deep_sort(includes_hash, sorts)
-          sorts
-            .map { |sort| sort(includes_hash, sort) }
-            .compact
-            .group_by(&:first)
-            .map { |key, value| combined_order_spec(key, value) }
-            .to_h
+          return {} if sorts.empty?
+
+          # Group sorts first to reduce duplicate processing
+          grouped_sorts = sorts.group_by { |sort| sort.keys.first }
+
+          result = {}
+          grouped_sorts.each do |path_key, path_sorts|
+            path = path_key.map { |key| {rel_name: key.to_s} }
+            cached_path = cache_key_for_path(path)
+
+            descriptor = @path_cache[cached_path] ||= PathDescriptor.parse(scope, path.dup)
+            next unless descriptor
+
+            path_relationships = descriptor.path_relationships
+            next unless valid_sort?(includes_hash.deep_dup, path_relationships)
+
+            sort_specs = path_sorts.map do |sort|
+              create_sort_spec(descriptor, sort.values.first)
+            end
+
+            combined_key = path_relationships.join(".")
+            result[combined_key] = (result[combined_key] || []) + sort_specs
+          end
+
+          result
         end
 
         private
 
-        def combined_order_spec(key, value)
-          [key.join('.'), value.map(&:last)]
+        def cache_key_for_path(path)
+          path.map { |p| p[:rel_name] }.join(".")
         end
 
-        def sort(includes_hash, sort)
-          path = sort.keys.first.map { |key| { rel_name: key.to_s } }
-          return nil unless (descriptor = PathDescriptor.parse(scope, path))
-
-          sort_spec(descriptor, sort.values.first) if valid_sort?(includes_hash.deep_dup, descriptor.path_relationships)
+        def create_sort_spec(descriptor, direction)
+          sort_attr = "#{descriptor.attribute} #{direction}"
+          descriptor.rel.present? ? {rel: sort_attr} : sort_attr
         end
 
         def valid_sort?(hash, rels)
-          rels.empty? || rels.all? { |rel| hash = hash[rel] || hash[:"#{rel.to_s + '*'}"] }
-        end
+          return true if rels.empty?
 
-        def sort_spec(descriptor, direction)
-          sort_attr = [descriptor.attribute, direction].join(' ')
-          [descriptor.path_relationships, descriptor.rel.present? ? { rel: sort_attr } : sort_attr]
+          rels.all? do |rel|
+            hash = hash[rel] || hash[:"#{rel}*"]
+            hash.present?
+          end
         end
       end
     end

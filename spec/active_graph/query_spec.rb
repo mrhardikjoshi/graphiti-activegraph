@@ -7,55 +7,55 @@ describe Graphiti::ActiveGraph::Query do
   let(:parents) {}
   let(:action) {}
 
-  describe '#links?' do
+  describe "#links?" do
     subject { query.links? }
 
-    context 'when absent' do
+    context "when absent" do
       let(:params) { {} }
 
       it { is_expected.to be true }
     end
 
-    context 'when false' do
-      let(:params) { { links: 'false' } }
+    context "when false" do
+      let(:params) { {links: "false"} }
 
       it { is_expected.to be false }
     end
 
-    context 'when true' do
-      let(:params) { { links: 'true' } }
+    context "when true" do
+      let(:params) { {links: "true"} }
 
       it { is_expected.to be true }
 
-      context 'when xml format' do
-        let(:params) { { links: 'true', format: 'xml' } }
+      context "when xml format" do
+        let(:params) { {links: "true", format: "xml"} }
 
         it { is_expected.to be false }
       end
     end
   end
 
-  describe '#pagination_links?' do
+  describe "#pagination_links?" do
     subject { query.pagination_links? }
 
-    context 'when absent' do
+    context "when absent" do
       let(:params) { {} }
 
       it { is_expected.to be true }
     end
 
-    context 'when false' do
-      let(:params) { { pagination_links: 'false' } }
+    context "when false" do
+      let(:params) { {pagination_links: "false"} }
 
       it { is_expected.to be false }
     end
 
-    context 'when true' do
-      let(:params) { { pagination_links: 'true' } }
+    context "when true" do
+      let(:params) { {pagination_links: "true"} }
 
       it { is_expected.to be true }
 
-      context 'when :show action' do
+      context "when :show action" do
         let(:action) { :show }
 
         it { is_expected.to be false }

@@ -7,10 +7,10 @@ module Graphiti::ActiveGraph
           # use custom assigned sideload if it is specified via "assign_each_proc"
           # otherwise retrieve sideload using normal getter on parent object
           records = if custom_proc = sideload_ref.assign_each_proc
-                      custom_proc.call(@object)
-                    else
-                      @object.public_send(sideload_ref.association_name)
-                    end
+            custom_proc.call(@object)
+          else
+            @object.public_send(sideload_ref.association_name)
+          end
 
           if records
             if records.respond_to?(:to_ary)

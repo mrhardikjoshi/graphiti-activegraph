@@ -50,7 +50,7 @@ module Graphiti::ActiveGraph
           return unless association = PathDescriptor.association_for_relationship(scope.associations, rel_name: key.to_s)
 
           limit_part = Graphiti::ActiveGraph::Util::Transformers::RelationParam.new(value.keys.first).rel_limit
-          association_name = "#{limit_part}#{association.first}".to_sym
+          association_name = :"#{limit_part}#{association.first}"
           normalize_include(scope, association_name, next_non_rel_value(value), resource_class_by_rel(resource_class, association, key, scope))
         end
 

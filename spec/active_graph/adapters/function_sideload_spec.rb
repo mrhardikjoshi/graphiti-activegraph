@@ -4,10 +4,11 @@ RSpec.describe Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload do
   before(:all) do
     class BookResource < Graphiti::ActiveGraph::Resource
     end
+
     class LibraryResource < Graphiti::ActiveGraph::Resource
       has_one :missing_books, writable: false, class: Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload, resource: BookResource do
-        self.function_proc = ->() { 'searches.missing_books($opts)' }
-        self.param_proc = ->() { { opts: { genres: 'Novel' } } }
+        self.function_proc = -> { "searches.missing_books($opts)" }
+        self.param_proc = -> { {opts: {genres: "Novel"}} }
         link {}
       end
     end
@@ -18,17 +19,17 @@ RSpec.describe Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload do
     Object.send(:remove_const, :LibraryResource)
   end
 
-  describe 'sideload' do
-    it 'has correct class' do
+  describe "sideload" do
+    it "has correct class" do
       expect(subject).to be_a(Graphiti::ActiveGraph::Adapters::ActiveGraph::FunctionSideload)
     end
 
-    it 'correctly sets function proc' do
-      expect(subject.function_proc.call).to eq('searches.missing_books($opts)')
+    it "correctly sets function proc" do
+      expect(subject.function_proc.call).to eq("searches.missing_books($opts)")
     end
 
-    it 'correctly sets function params' do
-      expect(subject.param_proc.call).to eq({ opts: { genres: 'Novel' } })
+    it "correctly sets function params" do
+      expect(subject.param_proc.call).to eq({opts: {genres: "Novel"}})
     end
   end
 end

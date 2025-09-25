@@ -5,22 +5,22 @@ RSpec.describe Graphiti::ActiveGraph::Extensions::QueryParams do
 
   subject { described_class.new(params, resource_class, grouping_extra_params:) }
 
-  describe '#extra_field?' do
+  describe "#extra_field?" do
     let(:extra_fields) { {} }
     let(:params) { {extra_fields:} }
 
-    context 'with extra_field in params' do
-      let(:extra_fields) { { planets: ['perihelion', 'aphelion'] } }
+    context "with extra_field in params" do
+      let(:extra_fields) { {planets: ["perihelion", "aphelion"]} }
 
-      it 'returns true' do
+      it "returns true" do
         expect(subject.extra_field?(:planets, :perihelion)).to be true
       end
     end
 
-    context 'without extra_field in params' do
-      let(:extra_fields) { { planets: ['aphelion'] } }
+    context "without extra_field in params" do
+      let(:extra_fields) { {planets: ["aphelion"]} }
 
-      it 'returns false' do
+      it "returns false" do
         expect(subject.extra_field?(:planets, :perihelion)).to be false
       end
     end

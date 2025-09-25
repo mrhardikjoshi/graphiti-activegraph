@@ -1,14 +1,14 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
-require 'pry'
-require 'active_graph'
-require 'graphiti'
-require 'graphiti-activegraph'
-require_relative 'active_graph/support/jsonapi_resource_support'
-require 'support/neo4j_db_cleaner'
-require 'support/factory_bot_setup'
-require 'support/neo4j_driver_setup'
-require 'parslet'
+require "pry"
+require "active_graph"
+require "graphiti"
+require "graphiti-activegraph"
+require_relative "active_graph/support/jsonapi_resource_support"
+require "support/neo4j_db_cleaner"
+require "support/factory_bot_setup"
+require "support/neo4j_driver_setup"
+require "parslet"
 
 set_default_driver
 

@@ -38,7 +38,7 @@ module Graphiti::ActiveGraph::Concerns
     end
 
     def update_realationships(rel_name, path_value)
-      relationships[rel_name] = { meta: {}, attributes: { id: path_value } }
+      relationships[rel_name] = {meta: {}, attributes: {id: path_value}}
     end
   end
 end

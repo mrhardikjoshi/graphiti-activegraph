@@ -6,7 +6,7 @@ module Graphiti::ActiveGraph
           has_many: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasManySideload,
           has_one: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload,
           polymorphic_belongs_to: Graphiti::ActiveGraph::Adapters::ActiveGraph::PolymorphicBelongsTo,
-          belongs_to: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload,
+          belongs_to: Graphiti::ActiveGraph::Adapters::ActiveGraph::HasOneSideload
         }
       end
 
@@ -106,24 +106,24 @@ module Graphiti::ActiveGraph
       def filter_eq(scope, attribute, value)
         scope.where(attribute => value)
       end
-      alias filter_integer_eq filter_eq
-      alias filter_float_eq filter_eq
-      alias filter_big_decimal_eq filter_eq
-      alias filter_date_eq filter_eq
-      alias filter_boolean_eq filter_eq
-      alias filter_uuid_eq filter_eq
-      alias filter_enum_eq filter_eq
+      alias_method :filter_integer_eq, :filter_eq
+      alias_method :filter_float_eq, :filter_eq
+      alias_method :filter_big_decimal_eq, :filter_eq
+      alias_method :filter_date_eq, :filter_eq
+      alias_method :filter_boolean_eq, :filter_eq
+      alias_method :filter_uuid_eq, :filter_eq
+      alias_method :filter_enum_eq, :filter_eq
 
       def filter_not_eq(scope, attribute, value)
         scope.where_not(attribute => value)
       end
-      alias filter_integer_not_eq filter_not_eq
-      alias filter_float_not_eq filter_not_eq
-      alias filter_big_decimal_not_eq filter_not_eq
-      alias filter_date_not_eq filter_not_eq
-      alias filter_boolean_not_eq filter_not_eq
-      alias filter_uuid_not_eq filter_not_eq
-      alias filter_enum_not_eq filter_not_eq
+      alias_method :filter_integer_not_eq, :filter_not_eq
+      alias_method :filter_float_not_eq, :filter_not_eq
+      alias_method :filter_big_decimal_not_eq, :filter_not_eq
+      alias_method :filter_date_not_eq, :filter_not_eq
+      alias_method :filter_boolean_not_eq, :filter_not_eq
+      alias_method :filter_uuid_not_eq, :filter_not_eq
+      alias_method :filter_enum_not_eq, :filter_not_eq
 
       private
 

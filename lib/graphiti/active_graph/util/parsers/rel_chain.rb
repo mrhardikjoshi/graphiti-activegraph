@@ -2,12 +2,12 @@ module Graphiti::ActiveGraph
   module Util
     module Parsers
       class RelChain < Parslet::Parser
-        VAR_CHAR = 'a-z_'
+        VAR_CHAR = "a-z_"
 
-        rule(:asterisk) { str('*') }
-        rule(:range) { str('..') }
-        rule(:dot) { str('.') }
-        rule(:none) { str('') }
+        rule(:asterisk) { str("*") }
+        rule(:range) { str("..") }
+        rule(:dot) { str(".") }
+        rule(:none) { str("") }
         rule(:number) { match('[\d]').repeat(1) }
         rule(:number?) { number | none }
         rule(:identifier) { match("[#{VAR_CHAR}]") >> match("[#{VAR_CHAR}0-9]").repeat(0) }

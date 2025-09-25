@@ -3,7 +3,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     attr_reader :params, :grouping_criteria_list, :resource_class
     def initialize(params, resource_class)
       @params = params
-      @grouping_criteria_list = params.fetch(:group_by, nil)&.split(',') || []
+      @grouping_criteria_list = params.fetch(:group_by, nil)&.split(",") || []
       @resource_class = resource_class
     end
 
@@ -22,7 +22,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     def ends_with_attribute?(model, criteria)
       return false if criteria.blank?
 
-      last_segment_attribute?(model, criteria.split('.'))
+      last_segment_attribute?(model, criteria.split("."))
     end
 
     private
@@ -36,7 +36,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
 
     def traverse_to_last_associated_model(model, intermediate_segments)
       intermediate_segments.each do |segment|
-        return false unless(model = associated_model(model, segment))
+        return false unless (model = associated_model(model, segment))
       end
       model
     end

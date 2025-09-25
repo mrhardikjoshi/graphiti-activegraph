@@ -8,6 +8,7 @@ end
 
 class Star
   include ActiveGraph::Node
+
   id_property :neo_id
   include ModelParent
 
@@ -21,6 +22,7 @@ end
 
 class Planet
   include ActiveGraph::Node
+
   id_property :neo_id
   include ModelParent
 
@@ -34,6 +36,7 @@ end
 
 class Satellite
   include ActiveGraph::Node
+
   id_property :neo_id
   include ModelParent
 
@@ -46,27 +49,27 @@ class Satellite
 end
 
 class SerializableStar < JSONAPI::Serializable::Resource
-  type 'stars'
+  type "stars"
 
   attributes :id, :name, :age
-  relationship :planets, class: 'SerializablePlanet'
-  relationship :satellites, class: 'SerializableSatellite'
+  relationship :planets, class: "SerializablePlanet"
+  relationship :satellites, class: "SerializableSatellite"
 end
 
 class SerializablePlanet < JSONAPI::Serializable::Resource
-  type 'planets'
+  type "planets"
 
   attributes :id, :name, :temperature
-  relationship :star, class: 'SerializableStar'
-  relationship :satellites, class: 'SerializableSatellite'
+  relationship :star, class: "SerializableStar"
+  relationship :satellites, class: "SerializableSatellite"
 end
 
 class SerializableSatellite < JSONAPI::Serializable::Resource
-  type 'satellites'
+  type "satellites"
 
   attributes :id, :name, :radius
-  relationship :star, class: 'SerializableStar'
-  relationship :planet, class: 'SerializablePlanet'
+  relationship :star, class: "SerializableStar"
+  relationship :planet, class: "SerializablePlanet"
 end
 
 class PlanetResource < Graphiti::ActiveGraph::Resource

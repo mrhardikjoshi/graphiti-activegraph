@@ -27,7 +27,7 @@ module Graphiti::ActiveGraph
       end
 
       def nil_or_empty(key)
-        @resource.class.config[:sideloads][key].type == :has_one ? nil : []
+        (@resource.class.config[:sideloads][key].type == :has_one) ? nil : []
       end
     end
   end

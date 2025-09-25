@@ -17,7 +17,7 @@ module Graphiti::ActiveGraph::Extensions
     end
 
     def group_by_params_hash
-      { group_by: group_by.grouping_criteria_list }.merge(grouping_extra_params)
+      {group_by: group_by.grouping_criteria_list}.merge(grouping_extra_params)
     end
 
     def extra_field?(type, name)
