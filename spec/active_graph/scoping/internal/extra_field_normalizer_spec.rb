@@ -87,5 +87,14 @@ describe Graphiti::ActiveGraph::Scoping::Internal::ExtraFieldNormalizer do
 
       it { is_expected.to eq(['posts', 'comment', 'posts.author.posts', 'posts.author.comment']) }
     end
+
+    context 'when no includes value' do
+      let(:includes) {{}}
+      before do
+        AuthorResource.config[:extra_attributes][:recent_three_post_titles][:preload] = :posts
+      end
+
+      it { is_expected.to eq(['posts']) }
+    end
   end
 end

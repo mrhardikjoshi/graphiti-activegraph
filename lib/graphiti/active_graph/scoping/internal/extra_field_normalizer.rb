@@ -12,7 +12,7 @@ module Graphiti::ActiveGraph
           return [] if @extra_fields.blank?
 
           process_extra_fields_for_assoc(resource, [], '')
-          collect_extra_field_paths(resource, normalized_includes)
+          collect_extra_field_paths(resource, normalized_includes) unless normalized_includes.blank?
           @extra_includes.uniq
         end
 
