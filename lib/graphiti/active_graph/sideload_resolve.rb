@@ -70,7 +70,7 @@ module Graphiti::ActiveGraph
     def resource_for_preload(type)
       return @resource if type == @resource.type
 
-      find_resource_in_included_associations(type)
+      find_resource_in_included_associations(type) unless @query.sideloads.empty?
     end
 
     def find_resource_in_included_associations(type, sideload_query = @query)
