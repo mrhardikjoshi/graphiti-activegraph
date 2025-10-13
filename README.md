@@ -65,6 +65,48 @@ Control the links in response payload via request query params:
 - `pagination_links=true|false` — toggle top-level pagination links
 - `links=true|false` — toggle links inside each resource object
 
+#### Preload Extra Attribute Associations via `preload:` option
+You can declare an extra attribute on your resource and specify an association to preload using the `preload:` option.
+  Example:
+  ```ruby
+    extra_attribute :full_post_title, :string, preload: :author
+  ```
+Check [spec/active_graph/scoping/internal/extra_field_normalizer_spec.rb](https://github.com/mrhardikjoshi/graphiti-activegraph/blob/master/spec/active_graph/scoping/internal/extra_field_normalizer_spec.rb) for examples of usage `preload:` option.
+
+#### Preload Extra Fields via Model Preload Method
+You can define a custom preload method with prefix `preload_` in your model (e.g., `preload_posts_number` for the posts_number extra field) that fetches values for the extra attribute.
+When you request an extra field (e.g., `posts_number`) in your query, graphiti-activegraph will call this method, passing all relevant record IDs, and assign the returned values to each record’s extra attribute.
+This works for both top-level results and sideloaded records of the matching resource type.
+
+##### Usage example
+```ruby
+  class Comment
+    # Allows assignment of the extra field value by the preloader
+    attr_writer :author_activity
+
+    def author_activity
+      @author_activity ||= author.comments.count + author.posts.count
+    end
+
+    # Preload method which fetches values for the extra_attribute
+    def self.preload_author_activity(comment_ids)
+      where(id: comment_ids).with_associations(author: [:posts, :comments]).to_h do |comment|
+        author = comment.author
+        [comment.id, author.posts.count + author.comments.count]
+      end
+    end
+  end
+
+  class CommentResource < Graphiti::ActiveGraph::Resource
+    extra_attribute :author_activity, :integer
+  end
+```
+
+**Note:**
+Currently, this feature does not support preloading for deep sideloads such as `posts.comment.author*`. Deeply sideloaded records will not appear in the array of relevant records for preload, and thus will not have extra fields assigned.
+
+Check [spec/support/factory_bot_setup.rb](https://github.com/mrhardikjoshi/graphiti-activegraph/blob/master/spec/support/factory_bot_setup.rb) and [spec/active_graph/sideload_resolve_spec.rb](https://github.com/mrhardikjoshi/graphiti-activegraph/blob/master/spec/active_graph/sideload_resolve_spec.rb) for examples of usage.
+
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/mrhardikjoshi/graphiti-activegraph. This project is intended to be a safe, welcoming space for collaboration.
 
