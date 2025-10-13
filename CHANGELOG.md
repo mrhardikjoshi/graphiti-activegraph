@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-10-13
+### Added
+- **Extra fields preloading in main query**: Support preloading associations for `extra_fields` for main and sideloaded records. Adds `preload` option to `extra_attribute` in resource classes. Example: `extra_attribute :full_post_title, :string, preload: :author`. (PR #45)
+- **Extra fields preloading in separate query**: Collect IDs from the main query result and run a single separate query to load and calculate `extra_fields` values for all records. does not support preloading for deep sideloads. (PR #47)
+
 ## [1.2.0] - 2025-05-20
 
 ### Added
