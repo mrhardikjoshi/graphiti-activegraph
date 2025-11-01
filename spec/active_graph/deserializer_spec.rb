@@ -39,6 +39,37 @@ RSpec.describe Graphiti::ActiveGraph::Deserializer do
     end
   end
 
+  describe '#relationship_id' do
+    let(:rel_data) { { data: { id: 1, type: 'satellites' } } }
+    let(:params) { { data: { relationships:  { satellites: rel_data } } }.with_indifferent_access }
+    subject { deserializer.relationship_id(:satellites) }
+
+    it { is_expected.to be 1 }
+
+    context 'with no relationship in payload' do
+      let(:params) { { data: {'type': 'planet'} } }
+      it { is_expected.to be nil }
+    end
+  end
+
+  describe '#relationship_ids' do
+    let(:rel_data) { { data: [{ id: 1, type: 'satellites' }] } }
+    let(:params) { { data: { relationships:  { satellites: rel_data } } }.with_indifferent_access }
+    subject { deserializer.relationship_ids(:satellites) }
+
+    it { is_expected.to contain_exactly(1) }
+
+    context 'with multiple relationships in payload' do
+      let(:rel_data) { { data: [{ id: 1, type: 'satellites' }, { id: 29, type: 'satellites' }] } }
+      it { is_expected.to contain_exactly(1, 29) }
+    end
+
+    context 'with no relationship in payload' do
+      let(:params) { { data: {'type': 'planet'} } }
+      it { is_expected.to be_empty }
+    end
+  end
+
   describe '#relationship?' do
     subject { deserializer.relationship?(rel_name) }
 

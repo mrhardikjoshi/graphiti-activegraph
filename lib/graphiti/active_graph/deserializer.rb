@@ -59,6 +59,14 @@ module Graphiti::ActiveGraph
       relationships[name.to_sym].present?
     end
 
+    def relationship_id(name)
+      relationships[name]&.dig(:attributes, :id)
+    end
+
+    def relationship_ids(name)
+      Array.wrap(relationships[name]).pluck(:attributes).pluck(:id)
+    end
+
     # change empty relationship as `disassociate` hash so they will be removed
     def process_nil_relationship(name)
       attributes = {}
