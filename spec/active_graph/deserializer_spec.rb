@@ -41,7 +41,7 @@ RSpec.describe Graphiti::ActiveGraph::Deserializer do
 
   describe '#relationship_id' do
     let(:rel_data) { { data: { id: 1, type: 'satellites' } } }
-    let(:params) { { data: { relationships:  { satellites: rel_data } } }.with_indifferent_access }
+    let(:params) { { data: { relationships: { satellites: rel_data } } }.with_indifferent_access }
     subject { deserializer.relationship_id(:satellites) }
 
     it { is_expected.to be 1 }

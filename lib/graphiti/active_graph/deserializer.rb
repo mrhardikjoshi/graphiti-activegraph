@@ -1,6 +1,7 @@
 module Graphiti::ActiveGraph
   class Deserializer < Graphiti::Deserializer
     include Concerns::PathRelationships
+    include Concerns::Relationships
 
     class Conflict < StandardError
       attr_reader :key, :path_value, :body_value
@@ -53,18 +54,6 @@ module Graphiti::ActiveGraph
           hash[name] = data_payload.nil? ? process_nil_relationship(name) : process_relationship(relationship_payload[:data])
         end
       end
-    end
-
-    def relationship?(name)
-      relationships[name.to_sym].present?
-    end
-
-    def relationship_id(name)
-      relationships[name]&.dig(:attributes, :id)
-    end
-
-    def relationship_ids(name)
-      Array.wrap(relationships[name]).pluck(:attributes).pluck(:id)
     end
 
     # change empty relationship as `disassociate` hash so they will be removed
