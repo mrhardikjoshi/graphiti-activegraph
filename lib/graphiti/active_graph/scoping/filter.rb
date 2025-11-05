@@ -5,6 +5,8 @@ module Graphiti::ActiveGraph
       include Internal::SortingAliases
       include Extensions::QueryDsl::Performer
 
+      attr_reader :scope
+
       def apply
         super
         apply_query_dsl
