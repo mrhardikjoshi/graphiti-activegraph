@@ -12,6 +12,15 @@ require 'parslet'
 
 set_default_driver
 
+require 'simplecov'
+require 'simplecov-lcov'
+SimpleCov::Formatter::LcovFormatter.config do |c|
+  c.report_with_single_file = true
+  c.output_directory = 'coverage'
+  c.lcov_file_name = 'lcov.info'
+end
+SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
