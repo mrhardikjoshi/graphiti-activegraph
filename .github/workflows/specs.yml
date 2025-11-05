@@ -10,11 +10,14 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -50,15 +53,7 @@ jobs:
       - name: Run tests
         run: bundle exec rspec
 
-      - name: Install Qlty CLI
-        uses: qltysh/qlty-action/install@v2
-        with:
-          version: latest
-
-      - name: Upload coverage to Qlty
-        uses: qltysh/qlty-action/coverage@v2
+      - uses: qltysh/qlty-action/coverage@v1
         with:
           oidc: true
-          files: coverage/lcov.info
-        env:
-          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/coverage.json

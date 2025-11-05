@@ -13,13 +13,14 @@ require 'parslet'
 set_default_driver
 
 require 'simplecov'
-require 'simplecov-lcov'
-SimpleCov::Formatter::LcovFormatter.config do |c|
-  c.report_with_single_file = true
-  c.output_directory = 'coverage'
-  c.lcov_file_name = 'lcov.info'
+require 'simplecov_json_formatter'
+SimpleCov.start do
+    formatter SimpleCov::Formatter::MultiFormatter.new([
+      SimpleCov::Formatter::JSONFormatter,
+      SimpleCov::Formatter::HTMLFormatter
+    ])
+    add_filter '/spec/'
 end
-SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -74,4 +75,7 @@ RSpec.configure do |config|
       FFaker::UniqueUtils.clear # To avoid FFaker::UniqueUtils::RetryLimitExceeded
     end
   end
+
+  # Enable flags like --only-failures and --next-failure
+  config.example_status_persistence_file_path = ".rspec_status"
 end
