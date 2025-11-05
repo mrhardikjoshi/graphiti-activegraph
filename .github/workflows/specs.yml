@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7 ] # Removed 'jruby' till https://github.com/jruby/jruby/issues/8642 is fixed
+        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7 jruby]
         neo4j: [ 5.23.0 ]
         include:
           - ruby: jruby
@@ -49,3 +49,6 @@ jobs:
 
       - name: Run tests
         run: bundle exec rspec
+
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
