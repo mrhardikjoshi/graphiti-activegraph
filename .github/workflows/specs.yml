@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7 jruby]
+        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7, jruby]
         neo4j: [ 5.23.0 ]
         include:
           - ruby: jruby
