@@ -45,6 +45,11 @@ graphiti-activegraph allows assigning and unassigning relationships via sidepost
 Graphiti stores context using `Thread.current[]`, which does not persist across different fibers within the same thread. In graphiti-activegraph, when running on MRI (non-JRuby environments), the gem uses `thread_variable_get` and `thread_variable_set`. Ensuring the context remains consistent across different fibers in the same thread.
 
 ### New Features in graphiti-activegraph
+For detailed API documentation and helper method behavior, see the [docs](./docs) directory.
+- [Deserializer](./docs/deserializer.md)
+- [Adapter](./docs/adapter.md) *(planned)*
+- [Resource](./docs/resource.md) *(planned)*
+
 #### Rendering Preloaded Objects Without Extra Queries
 graphiti-activegraph introduces two new methods on the Graphiti resource class:
 `with_preloaded_obj(record, params)` – Renders a single preloaded ActiveGraph object without querying the database.
@@ -106,6 +111,8 @@ This works for both top-level results and sideloaded records of the matching res
 Currently, this feature does not support preloading for deep sideloads such as `posts.comment.author*`. Deeply sideloaded records will not appear in the array of relevant records for preload, and thus will not have extra fields assigned.
 
 Check [spec/support/factory_bot_setup.rb](https://github.com/mrhardikjoshi/graphiti-activegraph/blob/master/spec/support/factory_bot_setup.rb) and [spec/active_graph/sideload_resolve_spec.rb](https://github.com/mrhardikjoshi/graphiti-activegraph/blob/master/spec/active_graph/sideload_resolve_spec.rb) for examples of usage.
+
+## [CHANGELOG](CHANGELOG.md)
 
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/mrhardikjoshi/graphiti-activegraph. This project is intended to be a safe, welcoming space for collaboration.

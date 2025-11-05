@@ -23,8 +23,6 @@ module Graphiti::ActiveGraph::Extensions::QueryDsl
     end
 
     def query_generator_config
-      require 'pry'
-      binding.pry
       {
         query: scope,
         with_vars_to_carry:,
