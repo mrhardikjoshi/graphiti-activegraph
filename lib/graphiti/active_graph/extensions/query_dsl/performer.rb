@@ -3,7 +3,7 @@ module Graphiti::ActiveGraph::Extensions::QueryDsl
     attr_accessor :with_vars, :skip_arrow_cypher_rels
 
     def apply_query_dsl
-      query_param = resource.context.params[:query]
+      query_param = resource.context&.params[:query]
       query_param.present? ? apply_query_param(query_param) : scope
     end
 
