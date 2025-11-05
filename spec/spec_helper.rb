@@ -15,11 +15,11 @@ set_default_driver
 require 'simplecov'
 require 'simplecov_json_formatter'
 SimpleCov.start do
-    formatter SimpleCov::Formatter::MultiFormatter.new([
-      SimpleCov::Formatter::JSONFormatter,
-      SimpleCov::Formatter::HTMLFormatter
-    ])
-    add_filter '/spec/'
+  formatter SimpleCov::Formatter::MultiFormatter.new([
+                                                       SimpleCov::Formatter::JSONFormatter,
+                                                       SimpleCov::Formatter::HTMLFormatter
+                                                     ])
+  add_filter '/spec/'
 end
 
 RSpec.configure do |config|
@@ -77,5 +77,5 @@ RSpec.configure do |config|
   end
 
   # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = ".rspec_status"
+  config.example_status_persistence_file_path = '.rspec_status'
 end
