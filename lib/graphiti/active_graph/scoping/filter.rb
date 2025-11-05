@@ -2,6 +2,15 @@ module Graphiti::ActiveGraph
   module Scoping
     module Filter
       include Filterable
+      include Internal::SortingAliases
+      include Extensions::QueryDsl::Performer
+
+      attr_reader :scope
+
+      def apply
+        super
+        apply_query_dsl
+      end
 
       def each_filter
         filter_param.each_pair do |param_name, param_value|
