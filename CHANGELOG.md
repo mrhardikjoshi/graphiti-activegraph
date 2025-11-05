@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2025-11-5
+### Added
+- **Deserializer: relationship id(s) helpers**: introduced `relationship_id` and `relationship_ids` methods in `Deserializer` to fetch relationship id(s) by association name from request payload. (PR #49)
+
 ## [1.3.0] - 2025-10-13
 ### Added
 - **Extra fields preloading in main query**: Support preloading associations for `extra_fields` for main and sideloaded records. Adds `preload` option to `extra_attribute` in resource classes. Example: `extra_attribute :full_post_title, :string, preload: :author`. (PR #45)
