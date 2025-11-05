@@ -52,9 +52,7 @@ jobs:
 
       - name: Upload coverage to Qlty
         uses: qltysh/qlty-action/coverage@v2
-
-      - uses: qltysh/qlty-action/coverage@v2
-        with:
-          token: {{secrets.QLTY_COVERAGE_TOKEN}}
-          oidc: true
-          files: coverage/coverage.json
+          with:
+            token: {{secrets.QLTY_COVERAGE_TOKEN}}
+            oidc: true
+            files: coverage/coverage.json
