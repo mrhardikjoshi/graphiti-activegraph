@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'ffaker'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'simplecov-lcov'
   spec.add_development_dependency 'factory_bot_rails'
   spec.add_development_dependency 'rake', '>= 10.0'
   spec.add_development_dependency 'rspec', '>= 3.9.0'
