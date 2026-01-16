@@ -3,7 +3,8 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     attr_reader :params, :grouping_criteria_list, :resource_class
     def initialize(params, resource_class)
       @params = params
-      @grouping_criteria_list = params.fetch(:group_by, nil)&.split(',') || []
+      group_by_string = params.fetch(:group_by, nil)
+      @grouping_criteria_list = split_grouping_criteria(group_by_string)
       @resource_class = resource_class
     end
 
@@ -47,6 +48,37 @@ module Graphiti::ActiveGraph::Extensions::Grouping
 
     def associated_model(model, segment)
       model.associations[segment.to_sym]&.target_class
+    end
+
+    def split_grouping_criteria(group_by_string)
+      return [] if group_by_string.nil? || group_by_string.empty?
+
+      result = []
+      current = ""
+      depth = 0
+
+      group_by_string.each_char do |char|
+        case char
+        when '('
+          depth += 1
+          current << char
+        when ')'
+          depth -= 1
+          current << char
+        when ','
+          if depth.zero?
+            result << current.strip unless current.empty?
+            current = ""
+          else
+            current << char
+          end
+        else
+          current << char
+        end
+      end
+
+      result << current.strip unless current.empty?
+      result
     end
   end
 end
