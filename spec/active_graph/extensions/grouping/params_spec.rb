@@ -17,6 +17,14 @@ RSpec.describe Graphiti::ActiveGraph::Extensions::Grouping::Params do
           let(:group_by) { 'axial_tilt,north_pole_declination' }
           it { is_expected.to be false }
         end
+
+        context 'containing parentheses with commas' do
+          let(:group_by) { 'impact(35,139),axial_tilt' }
+          it { is_expected.to be false }
+          it 'does not split on commas inside parentheses' do
+            expect(obj.grouping_criteria_list).to eq(['impact(35,139)', 'axial_tilt'])
+          end
+        end
       end
 
       context 'when absent' do
