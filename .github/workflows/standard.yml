@@ -28,4 +28,6 @@ jobs:
           
           # Run standardrb and pipe to reviewdog
           # We use specific formatter 'clang' which matches the 'rubocop' format in reviewdog
-          bundle exec standardrb --format clang --force-exclusion | ./bin/reviewdog -f=rubocop -reporter=github-pr-review -fail-on-error=true
+          # We use tee to see the output in the logs for debugging purposes
+          set -o pipefail
+          bundle exec standardrb --format clang --force-exclusion | tee standardrb_output.txt | ./bin/reviewdog -f=rubocop -reporter=github-pr-review -fail-level=any
