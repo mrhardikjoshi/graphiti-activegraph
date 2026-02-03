@@ -1,6 +1,6 @@
 module Graphiti::ActiveGraph
   module SideloadResolve
-    PRELOAD_METHOD_PREFIX = 'preload_'.freeze
+    PRELOAD_METHOD_PREFIX = "preload_".freeze
 
     def initialize(object, resource, query, opts = {})
       @object = object
