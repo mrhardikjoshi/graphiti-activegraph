@@ -16,8 +16,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -53,7 +52,7 @@ jobs:
       - name: Run tests
         run: bundle exec rspec
 
-      - uses: qltysh/qlty-action/coverage@v1
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          oidc: true
-          files: coverage/coverage.json
+          token: ${{ secrets.CODECOV_TOKEN }}
