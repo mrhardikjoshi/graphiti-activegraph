@@ -27,5 +27,5 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
           
           # Run standardrb and pipe to reviewdog
-          # Standard uses RuboCop, so we use the rubocop error format
-          bundle exec standardrb --format progress --force-exclusion | ./bin/reviewdog -f=rubocop -reporter=github-pr-review -fail-on-error=true
+          # We use specific formatter 'clang' which matches the 'rubocop' format in reviewdog
+          bundle exec standardrb --format clang --force-exclusion | ./bin/reviewdog -f=rubocop -reporter=github-pr-review -fail-on-error=true
