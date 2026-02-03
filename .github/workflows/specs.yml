@@ -20,8 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [ ruby-3.4.2, ruby-3.3.7, ruby-3.2.7 ] # Removed 'jruby' till https://github.com/jruby/jruby/issues/8642 is fixed
-        neo4j: [ 5.23.0 ]
+        ruby-version: [ '3.4'] # Removed 'jruby' till https://github.com/jruby/jruby/issues/8642 is fixed
+        neo4j: [ '5.26.0', '5.23.0' ]
         include:
           - ruby: jruby
             java-version: 17
