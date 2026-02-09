@@ -1,6 +1,7 @@
 module Graphiti::ActiveGraph::Extensions::Grouping
   class Params
     attr_reader :params, :grouping_criteria_list, :resource_class
+
     def initialize(params, resource_class)
       @params = params
       group_by_string = params.fetch(:group_by, nil)
@@ -37,7 +38,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
 
     def traverse_to_last_associated_model(model, intermediate_segments)
       intermediate_segments.each do |segment|
-        return false unless(model = associated_model(model, segment))
+        return false unless (model = associated_model(model, segment))
       end
       model
     end
@@ -54,30 +55,46 @@ module Graphiti::ActiveGraph::Extensions::Grouping
       return [] if group_by_string.nil? || group_by_string.empty?
 
       result = []
-      current = ""
+      current = ''
       depth = 0
 
       group_by_string.each_char do |char|
-        case char
-        when '('
-          depth += 1
-          current << char
-        when ')'
-          depth -= 1
-          current << char
-        when ','
-          if depth.zero?
-            result << current.strip unless current.empty?
-            current = ""
-          else
-            current << char
-          end
-        else
-          current << char
-        end
+        depth, current = process_char(char, depth, current, result)
       end
 
-      result << current.strip unless current.empty?
+      add_criterion(result, current)
+      handle_mismatched_parentheses(result, depth)
+    end
+
+    def process_char(char, depth, current, result)
+      case char
+      when '(' then [depth + 1, current + char]
+      when ')' then [depth - 1, current + char]
+      when ',' then process_comma(depth, current, result)
+      else [depth, current + char]
+      end
+    end
+
+    def process_comma(depth, current, result)
+      if depth.zero?
+        add_criterion(result, current)
+        [depth, '']
+      else
+        [depth, current + ',']
+      end
+    end
+
+    def add_criterion(result, current)
+      stripped = current.strip
+      result << stripped unless stripped.empty?
+    end
+
+    def handle_mismatched_parentheses(result, final_depth)
+      return result if final_depth.zero? || result.empty?
+
+      # If we ended with unclosed parentheses, re-split the last segment
+      last_segment = result.pop
+      result.concat(last_segment.split(',').map(&:strip).reject(&:empty?))
       result
     end
   end
