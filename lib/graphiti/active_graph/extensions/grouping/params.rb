@@ -76,7 +76,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     end
 
     def process_comma(depth, current, result)
-      if depth.zero?
+      if depth <= 0
         add_criterion(result, current)
         [depth, '']
       else
@@ -90,7 +90,7 @@ module Graphiti::ActiveGraph::Extensions::Grouping
     end
 
     def handle_mismatched_parentheses(result, final_depth)
-      return result if final_depth.zero? || result.empty?
+      return result if final_depth <= 0 || result.empty?
 
       # If we ended with unclosed parentheses, re-split the last segment
       last_segment = result.pop
