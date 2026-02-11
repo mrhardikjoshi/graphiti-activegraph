@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-02-11
+### Changed
+- **Grouping criteria**: parsing improved to ignore commas inside parentheses, allowing for more complex grouping criteria (e.g. group_by='custom_function(arg1,arg2),another_value'). Previous implementation would split the criteria at the comma inside the parentheses, leading to unability to pass the function call. (PR #51)
+
 ## [1.3.1] - 2025-11-5
 ### Added
 - **Deserializer: relationship id(s) helpers**: introduced `relationship_id` and `relationship_ids` methods in `Deserializer` to fetch relationship id(s) by association name from request payload. (PR #49)
