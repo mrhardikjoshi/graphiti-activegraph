@@ -17,6 +17,54 @@ RSpec.describe Graphiti::ActiveGraph::Extensions::Grouping::Params do
           let(:group_by) { 'axial_tilt,north_pole_declination' }
           it { is_expected.to be false }
         end
+
+        context 'containing empty parentheses' do
+          let(:group_by) { 'impact(),axial_tilt' }
+          it { is_expected.to be false }
+          it 'splits on commas as usual' do
+            expect(obj.grouping_criteria_list).to eq(['impact()', 'axial_tilt'])
+          end
+        end
+
+        context 'containing parentheses with commas' do
+          let(:group_by) { 'impact(35,139),axial_tilt' }
+          it { is_expected.to be false }
+          it 'does not split on commas inside parentheses' do
+            expect(obj.grouping_criteria_list).to eq(['impact(35,139)', 'axial_tilt'])
+          end
+        end
+
+        context 'containing multiple functions' do
+          let(:group_by) { 'impact(35,139),test(44,44)' }
+          it { is_expected.to be false }
+          it 'does not split on commas inside parentheses' do
+            expect(obj.grouping_criteria_list).to eq(['impact(35,139)', 'test(44,44)'])
+          end
+        end
+
+        context 'containing nested parentheses with commas' do
+          let(:group_by) { 'func1(1,func2(35,139)),axial_tilt' }
+          it { is_expected.to be false }
+          it 'does not split on commas inside nested parentheses' do
+            expect(obj.grouping_criteria_list).to eq(['func1(1,func2(35,139))', 'axial_tilt'])
+          end
+        end
+
+        context 'containing mismatched parentheses with commas' do
+          let(:group_by) { 'impact(35,139),((this),string' }
+          it { is_expected.to be false }
+          it 'splits on commas with unclosed parentheses' do
+            expect(obj.grouping_criteria_list).to eq(['impact(35,139)', '((this)', 'string'])
+          end
+        end
+
+        context 'containing extra closing parenthesis with commas' do
+          let(:group_by) { 'impact(35,139)),axial_tilt' }
+          it { is_expected.to be false }
+          it 'does not split on commas with an extra closing parenthesis' do
+            expect(obj.grouping_criteria_list).to eq(['impact(35,139))', 'axial_tilt'])
+          end
+        end
       end
 
       context 'when absent' do
