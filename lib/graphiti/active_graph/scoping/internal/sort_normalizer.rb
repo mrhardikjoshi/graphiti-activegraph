@@ -37,7 +37,7 @@ module Graphiti::ActiveGraph
           path = sort.keys.first.map { |key| { rel_name: key.to_s } }
           return nil unless (descriptor = PathDescriptor.parse(scope, path))
 
-          sort_spec(descriptor, sort.values.first) if valid_sort?(includes_hash.deep_dup, descriptor.path_relationships)
+          sort_spec(descriptor, sort.values.first) if valid_sort?(includes_hash, descriptor.path_relationships)
         end
 
         def valid_sort?(hash, rels)
