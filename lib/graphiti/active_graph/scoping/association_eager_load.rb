@@ -7,7 +7,8 @@ module Graphiti::ActiveGraph
 
       def apply_standard_scope
         return @scope unless eagerload_associations?
-        if (ids = @scope.collect(&:id)).present?
+        ids = @scope.respond_to?(:pluck) ? @scope.pluck(:id) : @scope.collect(&:id)
+        if ids.present?
           @opts[:query_obj].include_hash.each_key do |key|
             eagerload_association(key, ids)
           end
