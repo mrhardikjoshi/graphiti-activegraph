@@ -7,16 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.2] - 2026-02-11
+## [1.3.3] - 2026-05-05
+
 ### Changed
+
+- **Ruby 4 and Graphiti 1.9.0 support**: Added support for Ruby 4 and Graphiti 1.9.0 and made minor performance improvements.
+
+## [1.3.2] - 2026-02-11
+
+### Changed
+
 - **Grouping criteria**: parsing improved to ignore commas inside parentheses, allowing for more complex grouping criteria (e.g. group_by='custom_function(arg1,arg2),another_value'). Previous implementation would split the criteria at the comma inside the parentheses, leading to inability to pass the function call. (PR #51)
 
 ## [1.3.1] - 2025-11-5
+
 ### Added
+
 - **Deserializer: relationship id(s) helpers**: introduced `relationship_id` and `relationship_ids` methods in `Deserializer` to fetch relationship id(s) by association name from request payload. (PR #49)
 
 ## [1.3.0] - 2025-10-13
+
 ### Added
+
 - **Extra fields preloading in main query**: Support preloading associations for `extra_fields` for main and sideloaded records. Adds `preload` option to `extra_attribute` in resource classes. Example: `extra_attribute :full_post_title, :string, preload: :author`. (PR #45)
 - **Extra fields preloading in separate query**: Collect IDs from the main query result and run a single separate query to load and calculate `extra_fields` values for all records. does not support preloading for deep sideloads. (PR #47)
 
@@ -47,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Sideloading Workflow**: Enhanced scoping mechanisms and added support for eager loading associations to improve data retrieval efficiency and flexibility (#38).
 
 ### Changed
+
 - **Resource Class**: Instead of modifying the `Graphiti::Resource` class, we now define `Graphiti::ActiveGraph::Resource`,  
   which must be inherited in all resource classes to enable ActiveGraph support (#38).
 
