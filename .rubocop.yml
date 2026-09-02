@@ -43,4 +43,5 @@ Naming/FileName:
 Style/StringLiterals:
   Enabled: false
 
-
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
