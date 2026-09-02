@@ -1,4 +1,5 @@
 rubocop:
   enabled: true
+  config_file: .rubocop.yml
 
 fail_on_violations: true

@@ -1,16 +1,21 @@
 module Graphiti::ActiveGraph
   module ResourceProxy
     include Graphiti::ActiveGraph::SideloadResolve
+
     attr_reader :preloaded, :cache_tag
 
-    def initialize(resource, scope, query,
+    def initialize(
+      resource,
+      scope,
+      query,
       payload: nil,
       single: false,
       raise_on_missing: false,
       cache: nil,
       cache_expires_in: nil,
       cache_tag: nil,
-      preloaded: false)
+      preloaded: false
+    )
       @resource = resource
       @scope = scope
       @query = query

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphiti
   module ActiveGraph
     module Util
