@@ -32,6 +32,14 @@ RSpec.describe Graphiti::Scope do
       expect(scope.resolve).to eq(results)
     end
 
+    it 'yields the resolved results' do
+      yielded = nil
+
+      scope.resolve { |records| yielded = records }
+
+      expect(yielded).to eq(results)
+    end
+
     it 'assigns serializer' do
       expect(scope).to receive(:assign_serializer).with(results)
       scope.resolve
