@@ -1,5 +1,10 @@
-Metrics/LineLength:
+AllCops:
+  TargetRubyVersion: 3.0
+  SuggestExtensions: false
+
+Layout/LineLength:
   Max: 120
+
 
 Metrics/BlockLength:
   Exclude:

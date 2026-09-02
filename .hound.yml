@@ -1,5 +1,7 @@
 rubocop:
   enabled: true
   config_file: .rubocop.yml
+  version: 1.22.1
 
 fail_on_violations: true
+

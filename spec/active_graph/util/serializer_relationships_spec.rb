@@ -30,7 +30,8 @@ RSpec.describe Graphiti::ActiveGraph::Util::SerializerRelationships do
 
       it "registers the relationship so Graphiti can evaluate the guard at runtime" do
         expect(Graphiti::Util::SerializerRelationship)
-          .to receive(:new).with(resource_class, serializer, sideload)
+          .to receive(:new)
+          .with(resource_class, serializer, sideload)
           .and_return(serializer_relationship)
         expect(serializer_relationship).to receive(:apply)
 

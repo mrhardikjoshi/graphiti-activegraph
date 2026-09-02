@@ -22,7 +22,7 @@ RSpec.describe "Graphiti 1.13 relationship guards", neo4j: true do
   let!(:author) { create(:author, :with_post) }
 
   def render_with_guard(allow_posts)
-    Graphiti.with_context(OpenStruct.new(allow_posts:), :index) do
+    Graphiti.with_context(OpenStruct.new(allow_posts: allow_posts), :index) do
       JSON.parse(resource_class.all(filter: {id: author.id}, include: "posts").to_jsonapi)
     end
   end
