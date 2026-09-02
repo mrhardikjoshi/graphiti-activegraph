@@ -1,8 +1,4 @@
-AllCops:
-  TargetRubyVersion: 3.0
-  SuggestExtensions: false
-
-Layout/LineLength:
+Metrics/LineLength:
   Max: 120
 
 Metrics/BlockLength:
@@ -41,4 +37,5 @@ Naming/FileName:
 
 Style/StringLiterals:
   Enabled: false
+
 
