@@ -18,8 +18,8 @@ module Graphiti::ActiveGraph
     def resolve_sideloads(parents)
     end
 
-    def resolve
-      resolve_with_callbacks.tap { |results| preload_extra_fields(results) }
+    def resolve(&blk)
+      resolve_with_callbacks(&blk).tap { |results| preload_extra_fields(results) }
     end
 
     private

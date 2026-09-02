@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-02
+
+### Changed
+
+- Added support for Graphiti 1.13.4, including `Resource.wrap` and per-request relationship guards.
+
+### Fixed
+
+- Forward Graphiti cache options, including `cache_tag`, through the ActiveGraph runner and resource proxy overrides.
+- Keep statically unreadable relationships out of ActiveGraph serializers while preserving Graphiti 1.13's dynamic readability guards.
+- Preserve Graphiti 1.13's scope resolution block and `around_persistence` mutation warning behavior in ActiveGraph overrides.
+
 ## [1.3.3] - 2026-05-05
 
 ### Changed
